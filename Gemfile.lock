@@ -36,8 +36,15 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    command-builder (0.3.1)
+      hash-utils (>= 0.18.0)
+      pipe-run (>= 0.2.1)
+    css_sprite (2.3.0)
+      mini_magick
     erubis (2.7.0)
     execjs (2.2.2)
+    hash-utils (2.2.0)
+      ruby-version (>= 0.4.0)
     hike (1.2.3)
     i18n (0.6.11)
     jbuilder (2.2.5)
@@ -50,9 +57,14 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.4.3)
+    mini_magick (4.0.1)
     minitest (5.4.3)
     multi_json (1.10.1)
+    optipng (0.2.1)
+      command-builder (>= 0.2.0)
+      unix-whereis (>= 0.1.0)
     pg (0.17.1)
+    pipe-run (0.3.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -74,6 +86,7 @@ GEM
     rake (10.3.2)
     rdoc (4.1.2)
       json (~> 1.4)
+    ruby-version (0.4.3)
     sass (3.2.19)
     sass-rails (4.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -103,14 +116,20 @@ GEM
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unix-whereis (0.1.1)
+      command-builder (>= 0.2.0)
+      hash-utils (>= 0.18.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
+  css_sprite (~> 2.3.0)
   jbuilder (~> 2.0)
   jquery-rails
+  mini_magick (~> 4.0.1)
+  optipng (~> 0.2.1)
   pg
   rails (= 4.1.7)
   sass-rails (~> 4.0.3)
