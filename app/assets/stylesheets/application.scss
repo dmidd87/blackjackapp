@@ -17,6 +17,25 @@
  $card-height: 70px;
  $card-width: 50px;
 
+.board {
+  width: 100%;
+  background: grey;
+  clear: both;
+  overflow: hidden;
+}
+.dealer, .player {
+  width: 40%;
+  float: left;
+}
+
+.dealer {
+
+}
+
+.player {
+
+}
+
  .card {
   display: inline-block;
   width: $card-width;
