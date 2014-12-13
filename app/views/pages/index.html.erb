@@ -6,13 +6,13 @@ Blackjack homepage
   <span class="card <%= card.name %>-<%= card.suit %>"></span>
 <% end %>
 
-
+<%= @deck.shuffle %>
 
 <main class="board">
   <section class="player">
       <h2>Player</h2>
-      <span class="card two-diamond"></span>
-      <span class="card two-diamond"></span>
+        <span class="card two-diamond"></span>
+        <span class="card two-diamond"></span>
   </section>
 
   <section class="dealer">
