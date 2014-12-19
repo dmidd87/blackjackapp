@@ -3,23 +3,34 @@
 # t.string :name
 
 Card.delete_all
+Game.delete_all
+
+game = Game.create!([
+    {
+     :id => 1
+    }
+])
 Card.create!([
   {
+    :game_id => game,
     :points => 2,
     :suit => 'club',
     :name => 'two'
   },
   {
+    :game_id => game,
     :points => 2,
     :suit => 'spade',
     :name => 'two'
   },
   {
+    :game_id => game,
     :points => 2,
     :suit => 'heart',
     :name => 'two'
   },
   {
+    :game_id => game,
     :points => 2,
     :suit => 'diamond',
     :name => 'two'

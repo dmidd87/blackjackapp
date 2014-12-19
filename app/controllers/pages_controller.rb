@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 
   def index
-    @deck = Card.all
+    @deck = Game.last.cards
   end
 end

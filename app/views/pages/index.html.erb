@@ -2,11 +2,13 @@ Blackjack homepage
 
 <%= stylesheet_link_tag 'css_sprite' %>
 
-<% @deck.each do |card| %>
-  <span class="card <%= card.name %>-<%= card.suit %>"></span>
-<% end %>
 
-<% @deck.shuffle %>
+<!-- <% @deck.each do |card| %>
+  p card
+  <span class="card <%= card.name %>-<%= card.suit %>"></span>
+<% end %> -->
+
+
 
 <main class="board">
   <section class="player">
@@ -18,7 +20,7 @@ Blackjack homepage
   <section class="dealer">
     <h2>Dealer</h2>
     <span class="card ace-spade"></span>
-    <span class="card ace-diamond"></span>
+    <span class="card ace-diamond"></ span>
   </section>
 </main>
 <p>

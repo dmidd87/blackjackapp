@@ -1,7 +1,5 @@
 class Card < ActiveRecord::Base
 
-  def card
-    
-  end
+  belongs_to :game
 
 end
