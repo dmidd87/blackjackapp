@@ -4,5 +4,5 @@ Rails.application.routes.draw do
 
   resources :pages
   resources :users
-  resources :registrations
+  resources :games
 end
