@@ -4,6 +4,9 @@ class Cards < ActiveRecord::Migration
       t.integer :points
       t.string :suit
       t.string :name
+      t.belongs_to :game
+      t.string :player
+      t.boolean :face_up, default: true, null: false
     end
   end
 end

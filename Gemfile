@@ -8,6 +8,14 @@ gem 'mini_magick', '~> 4.0.1'
 
 gem 'bootstrap-sass', '~> 3.2.0'
 
+gem 'capybara', '~> 2.4.4'
+
+gem 'rspec', '~> 3.1.0'
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.7'
 # Use postgresql as the database for Active Record

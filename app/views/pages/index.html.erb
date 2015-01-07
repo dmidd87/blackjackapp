@@ -2,21 +2,10 @@ Blackjack homepage
 
 <%= stylesheet_link_tag 'css_sprite' %>
 
-<%= link_to "New Game", game_path(:id) %>
+<%= form_for Game.new do |f| %>
+  <%= f.submit %>
+<% end %>
 
-<main class="board">
-  <section class="player">
-      <h2>Player</h2>
-        <span class="card two-diamond"></span>
-        <span class="card two-diamond"></span>
-  </section>
-
-  <section class="dealer">
-    <h2>Dealer</h2>
-    <span class="card ace-spade"></span>
-    <span class="card ace-diamond"></ span>
-  </section>
-</main>
 <p>
   <span class="card ace-spade"></span>
   <span class="card ace-diamond"></span>

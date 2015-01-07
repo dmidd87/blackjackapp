@@ -1,1 +1,15 @@
-This should show the new game page
+<%= @cards_in_play %>
+
+<h1>Player</h1>
+  <% @cards_in_play[0..1].each do |card| %>
+  <section class="player">
+    <p class="card <%= card.name %>-<%= card.suit %>"></p>
+  </section>
+  <% end %>
+
+<h2>Dealer</h2>
+  <% @cards_in_play[2..3].each do |card| %>
+  <section class="player">
+    <p class="card <%= card.name %>-<%= card.suit %>"></p>
+  </section>
+  <% end %>
