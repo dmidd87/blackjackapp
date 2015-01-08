@@ -1,21 +1,24 @@
-<h1>Player</h1>
-  <% @player_cards.each do |card| %>
-  <section class="player">
-    <p class="card <%= card.name %>-<%= card.suit %>"></p>
-  </section>
-  <% end %>
-Value : <%= @player_cards_value %>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
 <h1>Dealer</h1>
   <% @dealer_cards.each do |card| %>
-  <section class="dealer">
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
-  </section>
   <% end %>
+  <br>
 Value : <%= @dealer_cards_value %>
+
+<br>
+<br>
+<br>
+
+<h1>Player</h1>
+  <% @player_cards.each do |card| %>
+    <p class="card <%= card.name %>-<%= card.suit %>"></p>
+  <% end %>
+  Value : <%= @player_cards_value %>
+
+  <br>
+  <br>
+
+<%= submit_tag "Hit", :class => 'btn btn-primary' %>
+<%= submit_tag "Stand", :class => 'btn btn-primary' %>
+<%= submit_tag "Split", :class => 'btn btn-primary' %>
+<%= submit_tag "Double", :class => 'btn btn-primary' %>

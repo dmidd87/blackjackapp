@@ -11,8 +11,6 @@ class GamesController < ApplicationController
     @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
   end
 
-  # fix error message when deck runs out in games show view
-
   def create
     @game = Game.new({:created_at => Time.now})
     @game.save

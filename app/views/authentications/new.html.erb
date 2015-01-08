@@ -1,17 +1,24 @@
+<div class="col-sm-12">
+  <div class="col-md-offset-4 col-md-4">
+    <div class="well">
+
+      <h2 class="text-center">Sign In</h2>
+
 <%= form_tag sign_in_path do |f| %>
-
-  <div>
+  <div class="form-group">
     <%= label_tag :email_address, "Email" %>
-    <%= email_field_tag :email_address, ""%>
+    <%= email_field_tag :email_address, "", class: "form-control"%>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= label_tag :password, "Password" %>
-    <%= password_field_tag :password, "" %>
+    <%= password_field_tag :password, "", class: "form-control" %>
   </div>
 
-  <div>
-    <%= submit_tag "Enter" %>
+  <div class="form-group">
+    <%= submit_tag "Enter", :class => 'btn btn-primary' %>
   </div>
-
 <% end %>
+    </div>
+  </div>
+</div>

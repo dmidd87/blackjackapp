@@ -6,8 +6,8 @@ gem 'css_sprite', '~> 2.3.0'
 
 gem 'mini_magick', '~> 4.0.1'
 
-gem 'bootstrap-sass', '~> 3.2.0'
-
+gem 'bootstrap-sass', '~> 3.3.1.0'
+  
 gem 'capybara', '~> 2.4.4'
 
 gem 'rspec', '~> 3.1.0'
