@@ -12,7 +12,6 @@ class GamesController < ApplicationController
     end
   end
 
-  # Install Capybara and start writing tests
   # CRUD users, pass in user id to cards in play
   # Make sure users are assigned two cards after users is CRUD
   # fix error message when deck runs out in games show view
