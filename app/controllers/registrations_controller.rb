@@ -1,7 +1,9 @@
 class RegistrationsController < PublicController
 
   def index
+  end
 
+  def new
   end
 
   def user

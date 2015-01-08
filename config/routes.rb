@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   resources :pages
   resources :users
   resources :games
+  
+  get '/sign-up' => 'registrations#new', as: :signup
+  post '/sign-up' => 'registrations#create'
 end

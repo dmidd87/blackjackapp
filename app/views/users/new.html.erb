@@ -1,0 +1,28 @@
+<h1>Sign up now!</h1>
+
+<%= form_for @user, url: sign_up_path do |f| %>
+  <div>
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </div>
+  <div>
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </div>
+  <div>
+    <%= f.label :email_address %>
+    <%= f.text_field :email_address %>
+  </div>
+  <div>
+    <%= f.label :password %>
+    <%= f.text_field :password %>
+  </div>
+  <div>
+    <%= f.label :password_confirmation %>
+    <%= f.text_field :password_confirmation %>
+  </div>
+  <div>
+    <%= submit_tag "Register", :class => 'btn btn-primary'%>
+  </div>
+
+<% end %>
