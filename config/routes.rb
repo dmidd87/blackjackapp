@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   resources :pages
   resources :users
   resources :games
-  
+
   get '/sign-up' => 'registrations#new', as: :signup
   post '/sign-up' => 'registrations#create'
+
+  get '/sign-in' => 'authentications#new', as: :signin
+  post '/sign-in' => 'authentications#create'
+
+  get '/sign-out' => 'authentications#destroy', as: :signout
 end

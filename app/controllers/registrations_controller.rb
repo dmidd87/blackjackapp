@@ -13,6 +13,7 @@ class RegistrationsController < ApplicationController
     ))
     if
       @user.save
+      session[:user_id] = @user.id
       redirect_to games_path, notice: 'User was successfully created.'
     end
   end

@@ -6,16 +6,12 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @cards = Card.where(game_id: @game.id)
-    @cards_in_play = Card.get_four_random_cards(@cards)
-    # if @cards_in_play == []
-    #   @cards_in_play = []
-    # end
+    @player_cards, @dealer_cards = Card.get_four_random_cards(@cards, session[:user_id])
+    @player_cards_value = Card.get_value_of_cards(@player_cards)
+    @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
   end
 
-  # CRUD users, pass in user id to cards in play
-  # Make sure users are assigned two cards after users is CRUD
   # fix error message when deck runs out in games show view
-  # deal 2 cards to the user instead of four to seperate dealer from user
 
   def create
     @game = Game.new({:created_at => Time.now})

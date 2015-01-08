@@ -1,15 +1,21 @@
-<%= @cards_in_play %>
-
 <h1>Player</h1>
-  <% @cards_in_play[0..1].each do |card| %>
+  <% @player_cards.each do |card| %>
   <section class="player">
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
   </section>
   <% end %>
+Value : <%= @player_cards_value %>
 
-<h2>Dealer</h2>
-  <% @cards_in_play[2..3].each do |card| %>
-  <section class="player">
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h1>Dealer</h1>
+  <% @dealer_cards.each do |card| %>
+  <section class="dealer">
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
   </section>
   <% end %>
+Value : <%= @dealer_cards_value %>
