@@ -1,24 +1,31 @@
-<h1>Dealer</h1>
+<h1 class="text-center">Dealer</h1>
+<div class="text-center">
   <% @dealer_cards.each do |card| %>
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
   <% end %>
   <br>
 Value : <%= @dealer_cards_value %>
+</div>
 
 <br>
 <br>
 <br>
 
-<h1>Player</h1>
+<h1 class="text-center">Player</h1>
+  <div class="text-center">
   <% @player_cards.each do |card| %>
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
   <% end %>
+  <br>
   Value : <%= @player_cards_value %>
+  </div>
 
   <br>
   <br>
 
-<%= submit_tag "Hit", :class => 'btn btn-primary' %>
-<%= submit_tag "Stand", :class => 'btn btn-primary' %>
-<%= submit_tag "Split", :class => 'btn btn-primary' %>
-<%= submit_tag "Double", :class => 'btn btn-primary' %>
+<div class="text-center">
+  <%= submit_tag "Hit", :class => 'btn btn-primary' %>
+  <%= submit_tag "Stand", :class => 'btn btn-primary' %>
+  <%= submit_tag "Split", :class => 'btn btn-primary' %>
+  <%= submit_tag "Double", :class => 'btn btn-primary' %>
+</div>

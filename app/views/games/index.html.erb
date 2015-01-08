@@ -1,13 +1,19 @@
-<h1>Games index!</h1>
+<div class="text-center">
+  <h1>Welcome <%= "#{current_user.first_name} #{current_user.last_name}" %>!</h1>
 
-<p>
-  Display their account info?
-</p>
+  <p>
+    Account info
+  </p>
 
-<p>
-  Reroute to a new game?
-</p>
+  <p>
+    Stats?
+  </p>
 
-<%= form_for Game.new do |f| %>
-  <%= f.submit %>
-<% end %>
+  <p>
+    Different game modes? Classic and training?
+  </p>
+
+  <%= form_for Game.new do |f| %>
+    <%= f.submit class: "btn btn-primary" %>
+  <% end %>
+</div>

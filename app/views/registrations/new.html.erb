@@ -4,6 +4,10 @@
 
 <%= form_for @user, url: sign_up_path do |f| %>
 
+  <% if @sign_up_error %>
+    <div class= "alert alert-danger"><%= @sign_up_error %></div>
+  <% end %>
+
   <div class="form-group">
     <%= f.label :first_name %>
     <%= f.text_field :first_name, class: "form-control" %>
