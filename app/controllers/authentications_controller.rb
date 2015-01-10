@@ -13,7 +13,7 @@ class AuthenticationsController < ApplicationController
     @user = User.find_by_email_address(params[:email_address].downcase)
       if @user && @user.authenticate(params[:password])
         session[:user_id] = @user.id
-        redirect_to users_path
+        redirect_to games_path
       else
       @sign_in_error = "Username / password combination is invalid"
       render :new

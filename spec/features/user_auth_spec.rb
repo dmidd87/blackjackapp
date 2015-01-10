@@ -3,14 +3,12 @@ require 'rails_helper'
 feature "Users" do
 
   scenario "There are sign up and sign in links on the home page" do
-    pending
     visit root_path
     expect(page).to have_content "Sign In"
     expect(page).to have_content "Sign Up"
   end
 
   scenario "A visitor can register as a new user" do
-    pending
     visit root_path
     click_on "Sign Up"
     fill_in "First name", with: "Bob"
@@ -23,7 +21,6 @@ feature "Users" do
   end
 
   scenario "User cannot sign up without a password" do
-    pending
     visit root_path
     click_on "Sign Up"
     fill_in "First name", with: "Bob"
@@ -32,11 +29,10 @@ feature "Users" do
     fill_in "Password", with: ""
     fill_in "Password confirmation", with: ""
     click_on "Register"
-    expect(page).to have_content "Password cannot be blank"
+    expect(page).to have_content "Password can't be blank"
   end
 
   scenario "Registered users can sign in" do
-    pending
     visit root_path
     click_on "Sign Up"
     fill_in "First name", with: "Bob"
@@ -53,7 +49,6 @@ feature "Users" do
   end
 
   scenario "A registered user can sign out" do
-    pending
     visit root_path
     click_on "Sign Up"
     fill_in "First name", with: "Bob"
@@ -68,7 +63,6 @@ feature "Users" do
   end
 
   scenario "A user tries to sign up with a registered email address" do
-    pending
     visit root_path
     click_on "Sign Up"
     fill_in "First name", with: "Bob"

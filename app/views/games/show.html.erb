@@ -4,20 +4,20 @@
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
   <% end %>
   <br>
-Value : <%= @dealer_cards_value %>
+Hand Value : <%= @dealer_cards_value %>
 </div>
 
 <br>
 <br>
 <br>
 
-<h1 class="text-center">Player</h1>
+<h1 class="text-center"><%= current_user.first_name  %></h1>
   <div class="text-center">
   <% @player_cards.each do |card| %>
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
   <% end %>
   <br>
-  Value : <%= @player_cards_value %>
+Hand Value : <%= @player_cards_value %>
   </div>
 
   <br>

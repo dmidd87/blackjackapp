@@ -7,8 +7,13 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @cards = Card.where(game_id: @game.id)
     @player_cards, @dealer_cards = Card.get_four_random_cards(@cards, session[:user_id])
-    @player_cards_value = Card.get_value_of_cards(@player_cards)
-    @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
+    if @cards = nil?
+      @redraw_button = true
+    else
+      @player_cards_value = Card.get_value_of_cards(@player_cards)
+      @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
+    end
+
   end
 
   def create

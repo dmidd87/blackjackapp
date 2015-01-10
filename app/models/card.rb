@@ -3,10 +3,15 @@ class Card < ActiveRecord::Base
   belongs_to :game
 
   def self.get_value_of_cards(array_of_cards)
-    # loop through each card
-    # grab the value of the card
-    # add values together
-    # return the sum
+    array_of_points = array_of_cards.collect { |card| card.points }
+
+    value = 0
+
+    array_of_points.each do |point|
+      value += point
+    end
+
+    value
   end
 
 
