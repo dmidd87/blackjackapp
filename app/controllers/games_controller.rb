@@ -4,6 +4,8 @@ class GamesController < ApplicationController
   end
 
   def show
+    @user = current_user
+    @hand = Hand.new(user_id: @user.id)
     @game = Game.find(params[:id])
     @cards = Card.where(game_id: @game.id)
     @player_cards, @dealer_cards = Card.get_four_random_cards(@cards, session[:user_id])
@@ -13,7 +15,6 @@ class GamesController < ApplicationController
       @player_cards_value = Card.get_value_of_cards(@player_cards)
       @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
     end
-
   end
 
   def create

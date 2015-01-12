@@ -29,3 +29,19 @@ Hand Value : <%= @player_cards_value %>
   <%= submit_tag "Split", :class => 'btn btn-primary' %>
   <%= submit_tag "Double", :class => 'btn btn-primary' %>
 </div>
+
+<br>
+
+<div class="text-center">
+  Chips <%= @user.chips %>
+</div>
+
+<div class="text-center">
+<%= form_for @hand do |f| %>
+  <div class="form-group">
+    <%= f.label "Chips to bet" %>
+    <%= f.text_field :chips %>
+    <%= f.submit "Bet" %>
+  </div>
+<% end %>
+</div>

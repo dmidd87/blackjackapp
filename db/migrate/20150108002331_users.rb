@@ -5,6 +5,7 @@ class Users < ActiveRecord::Migration
       t.string :last_name
       t.string :email_address
       t.string :password_digest
+      t.integer :chips, default: 1000
       t.timestamps
     end
   end
