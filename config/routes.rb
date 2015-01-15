@@ -4,7 +4,10 @@ Rails.application.routes.draw do
 
   resources :pages
   resources :users
-  resources :games
+
+  resources :games do
+    post '/hand' => 'games#show'
+  end
 
   get '/sign-up' => 'registrations#new', as: :signup
   post '/sign-up' => 'registrations#create'

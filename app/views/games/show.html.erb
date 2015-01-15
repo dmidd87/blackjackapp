@@ -1,47 +1,66 @@
-<h1 class="text-center">Dealer</h1>
-<div class="text-center">
-  <% @dealer_cards.each do |card| %>
-    <p class="card <%= card.name %>-<%= card.suit %>"></p>
+<% if @cards == [] %>
+  <h1 class="text-center">Play some blackjack</h1>
+  <%= form_for @game do |f| %>
+    <div class="text-center">
+      <%= submit_tag "Deal Cards", :class => 'btn btn-primary' %>
+    </div>
   <% end %>
-  <br>
-Hand Value : <%= @dealer_cards_value %>
-</div>
+<% else %>
 
-<br>
-<br>
-<br>
-
-<h1 class="text-center"><%= current_user.first_name  %></h1>
+  <h1 class="text-center">Dealer</h1>
   <div class="text-center">
-  <% @player_cards.each do |card| %>
-    <p class="card <%= card.name %>-<%= card.suit %>"></p>
+    <% @dealer_cards.each do |card| %>
+      <% if card.face_up? %>
+        <p class="card <%= card.name %>-<%= card.suit %>"></p>
+      <% else %>
+        <p class="card card-face-down"></p>
+      <% end %>
+    <% end %>
+    <br>
+  Hand Value : <%= @dealer_cards_value %>
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  <% if @game.winner %>
+
+    <div class="text-center">
+      <h3>Game over</h3>
+      <br>
+      <%= submit_tag "New game", :class => 'btn btn-primary' %>
+    </div>
+
   <% end %>
+
+  <h1 class="text-center"><%= current_user.first_name  %></h1>
+    <div class="text-center">
+    <% @player_cards.each do |card| %>
+      <p class="card <%= card.name %>-<%= card.suit %>"></p>
+    <% end %>
+    <br>
+  Hand Value : <%= @player_cards_value %>
+    </div>
+
+    <br>
+    <br>
+
+  <% if @game.winner.nil? %>
+    <div class="text-center">
+      <%= form_for @game do |f| %>
+        <%= submit_tag "Hit", :class => 'btn btn-primary' %>
+        <%= submit_tag "Stand", :class => 'btn btn-primary' %>
+        <%= submit_tag "Split", :class => 'btn btn-primary' %>
+        <%= submit_tag "Double", :class => 'btn btn-primary' %>
+      <% end %>
+    </div>
+  <% end %>
+
   <br>
-Hand Value : <%= @player_cards_value %>
+
+  <div class="text-center">
+    Chips <%= @user.chips %>
   </div>
 
-  <br>
-  <br>
-
-<div class="text-center">
-  <%= submit_tag "Hit", :class => 'btn btn-primary' %>
-  <%= submit_tag "Stand", :class => 'btn btn-primary' %>
-  <%= submit_tag "Split", :class => 'btn btn-primary' %>
-  <%= submit_tag "Double", :class => 'btn btn-primary' %>
-</div>
-
-<br>
-
-<div class="text-center">
-  Chips <%= @user.chips %>
-</div>
-
-<div class="text-center">
-<%= form_for @hand do |f| %>
-  <div class="form-group">
-    <%= f.label "Chips to bet" %>
-    <%= f.text_field :chips %>
-    <%= f.submit "Bet" %>
-  </div>
 <% end %>
-</div>

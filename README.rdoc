@@ -1,15 +1,9 @@
-== README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
 TODO
-* Associate a game with a user when you create a game (passing in game_id to user or current user id to game id)
-* Migration for Hand Active Record Model (done in the models)
-* Post to create new hand from game#show (nested resources)
-  * This should accept a bet/chips
 
-Games table
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Add a winner attribute to games table (added winner to games table as a string)
+Add logic to games#update to progress the hand
+  computer does stuff on behalf of the dealer
+  put logic methods in the game model
+    "dealing" is assigning a player to a card that doesn't have one
+    busting / standing involves changing the face_up value of the face_down card
+  eventually update the winner attribute of the games table

@@ -23,11 +23,16 @@
 
 }
 
- .card {
+.card {
   display: inline-block;
   width: $card-width;
   height: $card-height;
   background-image: image-url('cards.png');
+}
+
+.card-face-down {
+  background-image: none;
+  background-color: #ccc;
 }
 
 .ace-spade { background-position: 0 $card-height * -.01; }
