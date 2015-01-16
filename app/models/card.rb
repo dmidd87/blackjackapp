@@ -29,8 +29,6 @@ class Card < ActiveRecord::Base
   end
 
   def self.run_dealers_hand(game, deck_cards, dealer_cards_value, player_cards_value)
-    p dealer_cards_value
-    p player_cards_value
     if dealer_cards_value > player_cards_value
       game.winner = 'dealer'
       game.save
@@ -38,6 +36,5 @@ class Card < ActiveRecord::Base
       new_card = deck_cards.shuffle[0]
       new_card.update(player: 'dealer')
     end
-
   end
 end

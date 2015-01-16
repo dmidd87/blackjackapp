@@ -21,7 +21,6 @@ class GamesController < ApplicationController
   end
 
   def update
-
     if params[:commit] == "Deal Cards"
       GameGenerator.generate_cards(params[:id])
       @game = Game.find(params[:id])
@@ -43,7 +42,13 @@ class GamesController < ApplicationController
 
     if params[:commit] == "Stand"
       @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      Card.run_dealers_hand(@game, @cards, @dealer_cards_value, @player_cards_value)
+      @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
+      if @dealer_cards_value > @player_cards_value
+        @game.winner = 'dealer'
+        @game.save
+      else
+        Card.run_dealers_hand(@game, @cards, @dealer_cards_value, @player_cards_value)
+      end
     end
 
     if @player_cards_value == 21
@@ -62,6 +67,17 @@ class GamesController < ApplicationController
       @game.save
       @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
     end
+
+    if @dealer_cards_value > 21
+      @game.winner = current_user.id
+      @game.save
+    end
+
+    if @dealer_cards_value > @player_cards_value && @dealer_cards_value <= 21
+      @game.winner = 'dealer'
+      @game.save
+    end
+
     redirect_to game_path(@game)
     # if params[:commit] == "Double Down"
     #   Card.give_player_a_card(@cards)
