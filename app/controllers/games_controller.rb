@@ -21,6 +21,7 @@ class GamesController < ApplicationController
   end
 
   def update
+
     if params[:commit] == "Deal Cards"
       GameGenerator.generate_cards(params[:id])
       @game = Game.find(params[:id])
@@ -40,9 +41,36 @@ class GamesController < ApplicationController
     @player_cards = @cards.select{|card| card.player == 'you' }
     @player_cards_value = Card.get_value_of_cards(@player_cards)
 
+    if @player_cards_value > 21
+      @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+      @game.winner = 'dealer'
+      @game.save
+    end
+
     if params[:commit] == "Stand"
       @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
+      if @dealer_cards_value > @player_cards_value
+        @game.winner = 'dealer'
+        @game.save
+      else
+        Card.run_dealers_hand(@game, @cards, @dealer_cards_value, @player_cards_value)
+      end
+    end
+
+    if params[:commit] == "Double Down"
+      Card.give_player_a_card(@cards)
+      @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+      @dealer_cards_value = Card.get_value_of_cards(@dealer_cards)
+      @player_cards_value = Card.get_value_of_cards(@player_cards)
+
+      if @player_cards_value > 21
+        @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+        @game.winner = 'dealer'
+        @game.save
+      end
+
+      #Player can't click anything else the hand for the player is finished
       if @dealer_cards_value > @player_cards_value
         @game.winner = 'dealer'
         @game.save
@@ -55,12 +83,17 @@ class GamesController < ApplicationController
       @game.winner = current_user.id
       @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
 
+      #This logic wouldn't work we need to check for 21 for the dealer and the user
+      #isnt the default winner if it's after the first two cards so its only on when the first
+      #two cards in the array equate to 21
+
       if @dealer_cards_value == 21
         @game.winner = 'push'
       end
 
       @game.save
     end
+
 
     if @player_cards_value > 21
       @game.winner = 'dealer'
@@ -79,16 +112,5 @@ class GamesController < ApplicationController
     end
 
     redirect_to game_path(@game)
-    # if params[:commit] == "Double Down"
-    #   Card.give_player_a_card(@cards)
-    #   # Double the bet
-    #   # Force the game to be over for the player after they are dealt a card
-    #   # If they bust, hand over reveal dealer down card
-    #   # Else run dealers hand
-    # end
-    # if params[:commit] == "Split"
-    #   # God help us all
-    # end
-    # redirect_to game_path(@game)
   end
 end

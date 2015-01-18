@@ -73,7 +73,7 @@ feature "Users" do
     click_on "Register"
     expect(page).to have_content "Bob Example"
     click_on "Sign Out"
-    click on "Sign Up"
+    click_on "Sign Up"
     fill_in "First name", with: "New"
     fill_in "Last name", with: "Test"
     fill_in "Email", with: "email@example.com"
