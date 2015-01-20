@@ -18,6 +18,7 @@ class Card < ActiveRecord::Base
     dealer_cards.each do |card|
       card.update(player: 'dealer')
     end
+
     dealer_cards.first.update(face_up: false)
 
     [player_cards, dealer_cards]

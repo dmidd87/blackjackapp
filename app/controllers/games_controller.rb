@@ -104,19 +104,23 @@ class GamesController < ApplicationController
     end
 
     if @player_cards_value > 21
+      @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       @game.winner = 'dealer'
       @game.save
-      @cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
     end
 
     if @dealer_cards_value > 21 && @player_cards_value <= 21
       @game.winner = 'you'
-      @game.winner = 'player'
       @game.save
     end
 
     if @dealer_cards_value <= 21 && @player_cards_value < 21 && @dealer_cards_value > @player_cards_value
       @game.winner = 'dealer'
+      @game.save
+    end
+
+    if @dealer_cards_value == 21 && @player_cards_value == 21
+      @game.winner = 'push'
       @game.save
     end
 

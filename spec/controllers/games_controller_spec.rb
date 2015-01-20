@@ -19,6 +19,7 @@ describe GamesController do
 
     it "When the dealer has natural blackjack and the player doesn't
     the dealer wins and the player loses" do
+    pending
       user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
       session[:user_id] = user.id
       game = Game.create!(user_id: user.id)
@@ -28,6 +29,8 @@ describe GamesController do
 
       Card.create!(game_id: game.id, player: "dealer", points: 10)
       Card.create!(game_id: game.id, player: "dealer", points: 11, face_up: false)
+
+      #how do i check the facedown card
 
       patch :update, id: game.id
       expect(game.reload.winner).to eq("dealer")
@@ -52,21 +55,19 @@ describe GamesController do
       expect(game.reload.winner).to eq("you")
     end
 
-    it "When the user has a hand value 21 and the dealer runs their hand and
-    hits to 21 it results in a push" do
+    it "When the user has blackjack and the dealer has blackjack it results in a push" do
+      pending
       user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
       session[:user_id] = user.id
       game = Game.create!(user_id: user.id)
 
-      Card.create!(game_id: game.id, player: "you", points: 5)
-      Card.create!(game_id: game.id, player: "you", points: 5)
+      Card.create!(game_id: game.id, player: "you", points: 10)
+      Card.create!(game_id: game.id, player: "you", points: 11)
 
       Card.create!(game_id: game.id, player: "dealer", points: 11)
       Card.create!(game_id: game.id, player: "dealer", points: 10, face_up: false)
 
-      Card.create!(game_id: game.id, player: "you", points: 11)
-
-      Card.create!(game_id: game.id, player: nil, points: 4)
+      #how do i chk facedown card
 
       expect {
         patch :update, id: game.id
@@ -89,8 +90,7 @@ describe GamesController do
       Card.create!(game_id: game.id, player: "dealer", points: 10)
       Card.create!(game_id: game.id, player: "dealer", points: 11, face_up: false)
 
-      #Add controller function to run a check for face down card to see if
-      #dealer card value is equal to 21
+      #chk facedown card
 
       expect {
         patch :update, id: game.id
@@ -101,10 +101,6 @@ describe GamesController do
 
     it "When the player hits and receives a hand with a greater value than 21
     the dealer is declared the winner" do
-    pending
-    Card.destroy_all
-    Game.destroy_all
-    User.destroy_all
 
     user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
     session[:user_id] = user.id
@@ -116,139 +112,51 @@ describe GamesController do
     Card.create!(game_id: game.id, player: "dealer", points: 10)
     Card.create!(game_id: game.id, player: "dealer", points: 2, face_up: false)
 
-    #Add hit action not Card.create!
-
     Card.create!(game_id: game.id, player: "you", points: 6)
 
-    expect {
-      patch :update, id: game.id
-    }.to change { game.winner}.from(nil).to("dealer")
+    patch :update, id: game.id
+    expect(game.reload.winner).to eq("dealer")
     end
-
-    #Dealer busts
 
     it "When the player stands and the dealer hits and the value of the dealers hand
     busts the user is declared the winner" do
-    pending
-    Card.destroy_all
-    Game.destroy_all
-    User.destroy_all
 
     user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
     session[:user_id] = user.id
     game = Game.create!(user_id: user.id)
 
     Card.create!(game_id: game.id, player: "you", points: 10)
-    Card.create!(game_id: game.id, player: "you", points: 6)
+    Card.create!(game_id: game.id, player: "you", points: 7)
 
-    Card.create!(game_id: game.id, player: "dealer", points: 10)
+    Card.create!(game_id: game.id, player: "dealer", points: 3)
     Card.create!(game_id: game.id, player: "dealer", points: 2, face_up: false)
 
-    #Player stands
-
+    Card.create!(game_id: game.id, player: "dealer", points: 10)
     Card.create!(game_id: game.id, player: "dealer", points: 10)
 
-    expect {
-      patch :update, id: game.id
-    }.to change { game.winner}.from(nil).to("you")
+    patch :update, id: game.id
+    expect(game.reload.winner).to eq("you")
     end
 
     it "Player hits once then stands and dealer busts" do
-    pending
-
-    Card.destroy_all
-    Game.destroy_all
-    User.destroy_all
 
     user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
     session[:user_id] = user.id
     game = Game.create!(user_id: user.id)
 
     Card.create!(game_id: game.id, player: "you", points: 10)
-    Card.create!(game_id: game.id, player: "you", points: 1)
+    Card.create!(game_id: game.id, player: "you", points: 3)
 
-    Card.create!(game_id: game.id, player: "dealer", points: 10)
+    Card.create!(game_id: game.id, player: "dealer", points: 6)
     Card.create!(game_id: game.id, player: "dealer", points: 2, face_up: false)
-
-    #Player hits
 
     Card.create!(game_id: game.id, player: "you", points: 7)
 
-    #Player stays
+    Card.create!(game_id: game.id, player: "dealer", points: 10)
+    Card.create!(game_id: game.id, player: "dealer", points: 6)
 
-    #Dealer action runs?
-
-    expect {
-      patch :update, id: game.id
-    }.to change { game.winner}.from(nil).to("you")
-    end
-
-    it "Player hits twice then stands and dealer busts" do
-      pending
-
-      Card.destroy_all
-      Game.destroy_all
-      User.destroy_all
-
-      user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
-      session[:user_id] = user.id
-      game = Game.create!(user_id: user.id)
-
-      Card.create!(game_id: game.id, player: "you", points: 2)
-      Card.create!(game_id: game.id, player: "you", points: 1)
-
-      Card.create!(game_id: game.id, player: "dealer", points: 10)
-      Card.create!(game_id: game.id, player: "dealer", points: 2, face_up: false)
-
-      #Player hits
-      #Player hits
-
-      Card.create!(game_id: game.id, player: "you", points: 7)
-      Card.create!(game_id: game.id, player: "you", points: 10)
-
-      #Player stays
-
-      #Dealer action runs?
-
-      Card.create!(game_id: game.id, player: "dealer", points: 8)
-
-      expect {
-        patch :update, id: game.id
-      }.to change { game.winner}.from(nil).to("you")
-    end
-
-    it "Player hits three times then stands and dealer busts" do
-      pending
-
-      Card.destroy_all
-      Game.destroy_all
-      User.destroy_all
-
-      user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
-      session[:user_id] = user.id
-      game = Game.create!(user_id: user.id)
-
-      Card.create!(game_id: game.id, player: "you", points: 2)
-      Card.create!(game_id: game.id, player: "you", points: 4)
-
-      Card.create!(game_id: game.id, player: "dealer", points: 10)
-      Card.create!(game_id: game.id, player: "dealer", points: 2, face_up: false)
-
-      #Player hits
-      #Player hits
-
-      Card.create!(game_id: game.id, player: "you", points: 2)
-      Card.create!(game_id: game.id, player: "you", points: 2)
-      Card.create!(game_id: game.id, player: "you", points: 10)
-
-      #Player stays
-      #Dealer action runs?
-
-      Card.create!(game_id: game.id, player: "dealer", points: 11)
-
-      expect {
-        patch :update, id: game.id
-      }.to change { game.winner}.from(nil).to("you")
+    patch :update, id: game.id
+    expect(game.reload.winner).to eq("you")
     end
 
     #DOUBLE DOWN BUTTON TESTS
