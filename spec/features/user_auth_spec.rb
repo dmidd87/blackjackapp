@@ -80,6 +80,6 @@ feature "Users" do
     fill_in "Password", with: "pass"
     fill_in "Password confirmation", with: "pass"
     click_on "Register"
-    expect(page).to have_content "That email address is already taken"
+    expect(page).to have_content "Email address has already been taken"
   end
 end

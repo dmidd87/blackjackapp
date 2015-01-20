@@ -17,11 +17,24 @@ describe GamesController do
 
     #All tests referencing being dealt or receiving 21 points in total for player and dealer
 
-    it "When the user is dealt 21 with the first two cards
-    a winner is declared and the game is over" do
-      Card.destroy_all
-      Game.destroy_all
-      User.destroy_all
+    it "When the dealer has natural blackjack and the player doesn't
+    the dealer wins and the player loses" do
+      user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
+      session[:user_id] = user.id
+      game = Game.create!(user_id: user.id)
+
+      Card.create!(game_id: game.id, player: "you", points: 3)
+      Card.create!(game_id: game.id, player: "you", points: 11)
+
+      Card.create!(game_id: game.id, player: "dealer", points: 10)
+      Card.create!(game_id: game.id, player: "dealer", points: 11, face_up: false)
+
+      patch :update, id: game.id
+      expect(game.reload.winner).to eq("dealer")
+    end
+
+    it "When the user is dealt blackjack with the first two cards, the dealer runs their hand and busts
+    and the user wins" do
 
       user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
       session[:user_id] = user.id
@@ -30,25 +43,17 @@ describe GamesController do
       Card.create!(game_id: game.id, player: "you", points: 10)
       Card.create!(game_id: game.id, player: "you", points: 11)
 
-      Card.create!(game_id: game.id, player: "dealer", points: 2)
+      Card.create!(game_id: game.id, player: "dealer", points: 10)
       Card.create!(game_id: game.id, player: "dealer", points: 2, face_up: false)
 
-      # alternative expected code
-      # expect {
-      #   patch :update, id: game.id
-      # }.to change { game.winner}.from(nil).to(user.id.to_s)
-      #
+      Card.create!(game_id: game.id, player: nil, points: 10)
+
       patch :update, id: game.id
-      expect(game.reload.winner).to eq user.id.to_s
+      expect(game.reload.winner).to eq("you")
     end
 
-    it "When the user is has a hand value 21 after with three or more cards a winner hasn't been
-    declared because the dealer still flips over card and receives cards until 21 or bust" do
-    pending
-      Card.destroy_all
-      Game.destroy_all
-      User.destroy_all
-
+    it "When the user has a hand value 21 and the dealer runs their hand and
+    hits to 21 it results in a push" do
       user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
       session[:user_id] = user.id
       game = Game.create!(user_id: user.id)
@@ -56,18 +61,16 @@ describe GamesController do
       Card.create!(game_id: game.id, player: "you", points: 5)
       Card.create!(game_id: game.id, player: "you", points: 5)
 
-      Card.create!(game_id: game.id, player: "dealer", points: 10)
-      Card.create!(game_id: game.id, player: "dealer", points: 7, face_up: false)
-
-      #Need to add hit action instead of creating a card for the player?
+      Card.create!(game_id: game.id, player: "dealer", points: 11)
+      Card.create!(game_id: game.id, player: "dealer", points: 10, face_up: false)
 
       Card.create!(game_id: game.id, player: "you", points: 11)
 
-      #Expect dealer card 2 to flip face up and the dealer to hit
+      Card.create!(game_id: game.id, player: nil, points: 4)
 
       expect {
         patch :update, id: game.id
-      }.to change { game.winner}.from(nil).to("push")
+      }.to change { game.reload.winner }.from(nil).to("push")
     end
 
     it "When the dealer is dealt 21 it instantly ends the hand before the user can do any actions" do
@@ -250,17 +253,17 @@ describe GamesController do
 
     #DOUBLE DOWN BUTTON TESTS
 
-    it "Player hits double down, is dealt one card, hits 21, dealer runs their hand and loses"
-    pending
-    end
-
-    it "Player hits double down, busts, and the dealer reveals their face down card and wins"
-    pending
-    end
-
-    it "Player hits double down, has a lower score than the dealer, the dealer flips over their
-    face down card and is declared the winner"
-    pending
-    end
+    # it "Player hits double down, is dealt one card, hits 21, dealer runs their hand and loses" do
+    # pending
+    # end
+    #
+    # it "Player hits double down, busts, and the dealer reveals their face down card and wins" do
+    # pending
+    # end
+    #
+    # it "Player hits double down, has a lower score than the dealer, the dealer flips over their
+    # face down card and is declared the winner" do
+    # pending
+    # end
   end
 end
