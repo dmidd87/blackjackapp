@@ -24,7 +24,6 @@ class GamesController < ApplicationController
     result = Foo.do_shit(params, session)
     @game = result[:game]
     @dealer_cards_value = result[:dealer_cards_value]
-    @user = result[:user]
     @player_cards_value = result[:player_cards_value]
     @cards = result[:cards]
 
