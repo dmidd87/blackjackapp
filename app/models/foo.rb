@@ -1,6 +1,18 @@
 class Foo
 
   def self.do_shit(params, session)
+    runner = new(params, session)
+    runner.run
+  end
+
+  attr_reader :params, :session
+  attr_reader :game, :dealer_cards_value, :player_cards_value, :cards
+  def initialize(params, session)
+    @params = params
+    @session = session
+  end
+
+  def run
     if params[:commit] == "Deal Cards"
       GameGenerator.generate_cards(params[:id])
       game = Game.find(params[:id])
