@@ -36,7 +36,7 @@ describe GamesController do
       expect(game.reload.winner).to eq("dealer")
     end
 
-    it "When the user is dealt blackjack with the first two cards, the dealer runs their hand and busts
+    it "When the user is dealt blackjack within the first two cards, the dealer runs their hand and busts
     and the user wins" do
 
       user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
@@ -68,6 +68,26 @@ describe GamesController do
       Card.create!(game_id: game.id, player: "dealer", points: 10, face_up: false)
 
       #how do i chk facedown card
+
+      expect {
+        patch :update, id: game.id
+      }.to change { game.reload.winner }.from(nil).to("push")
+    end
+
+    it "When the user has blackjack and the dealer hits and receives blackjack it results in a push" do
+      user = User.create!(first_name: "David", last_name: "Example", email_address: "david@example.com", password: "password")
+      session[:user_id] = user.id
+      game = Game.create!(user_id: user.id)
+
+      Card.create!(game_id: game.id, player: "you", points: 10)
+      Card.create!(game_id: game.id, player: "you", points: 11)
+
+      Card.create!(game_id: game.id, player: "dealer", points: 11)
+      Card.create!(game_id: game.id, player: "dealer", points: 5, face_up: false)
+
+      #Card not being flipped up?
+
+      Card.create!(game_id: game.id, player: "dealer", points: 5)
 
       expect {
         patch :update, id: game.id
@@ -158,20 +178,5 @@ describe GamesController do
     patch :update, id: game.id
     expect(game.reload.winner).to eq("you")
     end
-
-    #DOUBLE DOWN BUTTON TESTS
-
-    # it "Player hits double down, is dealt one card, hits 21, dealer runs their hand and loses" do
-    # pending
-    # end
-    #
-    # it "Player hits double down, busts, and the dealer reveals their face down card and wins" do
-    # pending
-    # end
-    #
-    # it "Player hits double down, has a lower score than the dealer, the dealer flips over their
-    # face down card and is declared the winner" do
-    # pending
-    # end
   end
 end
