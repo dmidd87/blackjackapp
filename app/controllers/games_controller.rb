@@ -26,7 +26,6 @@ class GamesController < ApplicationController
     @dealer_cards_value = result[:dealer_cards_value]
     @player_cards_value = result[:player_cards_value]
     @cards = result[:cards]
-
     redirect_to game_path(@game)
   end
 end

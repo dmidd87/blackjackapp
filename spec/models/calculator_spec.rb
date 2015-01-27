@@ -73,7 +73,6 @@ describe "Stand" do
     Card.create!(game_id: game.id, player: "dealer", points: 10, face_up: false)
 
     [:commit] == "Stand"
-    [:commit] == "Boogers"
   end
 end
 
