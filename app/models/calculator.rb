@@ -1,5 +1,8 @@
 class Calculator
 
+  #ace logic
+  #natural blackjack logic(facedown card check)
+
   def self.calculate(params, session)
     runner = new(params, session)
     runner.run
@@ -21,10 +24,9 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      if self.player_cards_value > 21
-        self.game.winner = 'dealer'
-        self.game.save
-      end
+      self.has_blackjack
+      self.player_rules
+      self.dealer_rules
     end
   end
 
@@ -35,13 +37,9 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      if self.dealer_cards_value > self.player_cards_value && self.player_cards_value < 21
-        self.game.winner = 'dealer'
-        self.game.save
-      end
-      if self.player_cards_value > self.dealer_cards_value && self.player_cards_value < 21
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-      end
+      self.has_blackjack
+      self.player_rules
+      self.dealer_rules
     end
   end
 
@@ -53,25 +51,13 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-
-      if self.player_cards_value <= 21 && self.dealer_cards_value < self.player_cards_value
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-        if self.dealer_cards_value < 17 && self.dealer_cards_value < self.player_cards_value
-          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        end
-      end
-
-      if self.dealer_cards_value > self.player_cards_value && self.player_cards_value < 21
-        self.game.winner = 'dealer'
-        self.game.save
-      end
-
-      if self.player_cards_value > 21
-        self.game.winner = 'dealer'
-        self.game.save
-      end
+      self.has_blackjack
+      self.player_rules
+      self.dealer_rules
     end
+  end
+
+  def split
   end
 
   def run
@@ -82,61 +68,64 @@ class Calculator
     self.game = Game.find(params[:id])
     self.cards = Card.where(game_id: game.id)
 
-    dealer_cards = cards.select{|card| card.player == 'dealer'}
-    dealer_cards_value = Card.get_value_of_cards(dealer_cards)
-    player_cards = cards.select{|card| card.player == 'you' }
-    player_cards_value = Card.get_value_of_cards(player_cards)
+    self.dealer_cards = cards.select{|card| card.player == 'dealer'}
+    self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
+    self.player_cards = cards.select{|card| card.player == 'you' }
+    self.player_cards_value = Card.get_value_of_cards(player_cards)
 
     self.hit
     self.stand
     self.doubledown
 
-    if dealer_cards_value > player_cards_value && dealer_cards_value < 21
-      game.winner = 'dealer'
-      game.save
-    end
-
-    if dealer_cards_value == 21 && player_cards_value < 21
-      cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      game.winner = 'dealer'
-      game.save
-    end
-
-    if player_cards_value == 21
-      cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      Card.run_dealers_hand(game, cards, dealer_cards_value, player_cards_value)
-      if dealer_cards_value == 21 #and the player received 21 after the first two cards
-        game.winner = 'push'
-      else
-        game.winner = 'you'
+    def has_blackjack
+      if self.player_cards_value == 21
+        self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+        if self.dealer_cards_value == 21
+          self.game.winner = 'push'
+          self.game.save
+        else
+          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+        end
       end
-      game.save
+
+      if self.dealer_cards_value == 21 && self.player_cards_value < 21
+        self.game.winner = 'dealer'
+        self.game.save
+      end
+      if self.dealer_cards_value == 21 && self.player_cards_value == 21
+        self.game.winner = 'push'
+        self.game.save
+      end
     end
 
-    if player_cards_value > 21
-      cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      game.winner = 'dealer'
-      game.save
+    def player_rules
+      if self.player_cards_value > 21
+        self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+        self.game.winner = 'dealer'
+        self.game.save
+      end
     end
 
-    if dealer_cards_value > 21 && player_cards_value <= 21
-      game.winner = 'you'
-      game.save
-    end
-
-    if dealer_cards_value <= 21 && player_cards_value < 21 && dealer_cards_value > player_cards_value
-      game.winner = 'dealer'
-      game.save
-    end
-
-    if dealer_cards_value == 21 && player_cards_value == 21
-      game.winner = 'push'
-      game.save
-    end
-
-    if dealer_cards_value == player_cards_value && dealer_cards_value < 21 && player_cards_value < 21
-      game.winner = 'push'
-      game.save
+    def dealer_rules
+      if self.dealer_cards_value >= 17 && self.dealer_cards_value > self.player_cards_value && self.dealer_cards_value < 20
+        self.game.winner = 'dealer'
+        self.game.save
+      end
+      if dealer_cards_value > 21 && player_cards_value <= 21
+        game.winner = 'you'
+        game.save
+      end
+      if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
+        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+      end
+      if self.dealer_cards_value >= 17 && self.player_cards_value > self.dealer_cards_value
+        self.game.winner = 'you'
+        self.game.save
+      end
+      if dealer_cards_value == player_cards_value && dealer_cards_value < 21 && player_cards_value < 21
+        game.winner = 'push'
+        game.save
+      end
     end
 
     {
