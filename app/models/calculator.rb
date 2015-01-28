@@ -31,6 +31,9 @@ class Calculator
   def stand
     if params[:commit] == "Stand"
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+      self.player_cards = self.cards.select{|card| card.player == 'you'}
+      self.player_cards_value = Card.get_value_of_cards(player_cards)
+      self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       if self.dealer_cards_value > self.player_cards_value && self.player_cards_value < 21
         self.game.winner = 'dealer'
@@ -45,17 +48,28 @@ class Calculator
   def doubledown
     if params[:commit] == "Double Down"
       Card.give_player_a_card(cards)
-      cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
+      self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+      self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
+      self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+      self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
 
-      if player_cards_value <= 21 && dealer_cards_value < player_cards_value
-        Card.run_dealers_hand(game, cards, dealer_cards_value, player_cards_value)
+      if self.player_cards_value <= 21 && self.dealer_cards_value < self.player_cards_value
+        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+        if self.dealer_cards_value < 17 && self.dealer_cards_value < self.player_cards_value
+          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+        end
       end
 
-      if player_cards_value > 21
-        game.winner = 'dealer'
-        game.save
+      if self.dealer_cards_value > self.player_cards_value && self.player_cards_value < 21
+        self.game.winner = 'dealer'
+        self.game.save
+      end
+
+      if self.player_cards_value > 21
+        self.game.winner = 'dealer'
+        self.game.save
       end
     end
   end
@@ -75,6 +89,7 @@ class Calculator
 
     self.hit
     self.stand
+    self.doubledown
 
     if dealer_cards_value > player_cards_value && dealer_cards_value < 21
       game.winner = 'dealer'
