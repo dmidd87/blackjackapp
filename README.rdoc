@@ -7,3 +7,8 @@ Add logic to games#update to progress the hand
     "dealing" is assigning a player to a card that doesn't have one
     busting / standing involves changing the face_up value of the face_down card
   eventually update the winner attribute of the games table
+
+
+#ace logic
+#natural blackjack logic(facedown card check)
+#def split 1/29/2015

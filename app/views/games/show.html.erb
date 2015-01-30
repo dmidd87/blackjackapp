@@ -7,18 +7,18 @@
   <% end %>
 <% else %>
 
-  <h1 class="text-center">Dealer</h1>
-  <div class="text-center">
-    <% @dealer_cards.each do |card| %>
-      <% if card.face_up? %>
-        <p class="card <%= card.name %>-<%= card.suit %>"></p>
-      <% else %>
-        <p class="card card-face-down"></p>
-      <% end %>
+<h1 class="text-center">Dealer</h1>
+<div class="text-center">
+  <% @dealer_cards.each do |card| %>
+    <% if card.face_up? %>
+      <p class="card <%= card.name %>-<%= card.suit %>"></p>
+    <% else %>
+      <p class="card card-face-down"></p>
     <% end %>
-    <br>
-  Hand Value : <%= @dealer_cards_value %>
-  </div>
+  <% end %>
+<br>
+Hand Value : <%= @dealer_cards_value %>
+</div>
 
   <br>
   <br>
@@ -43,24 +43,24 @@
   Hand Value : <%= @player_cards_value %>
     </div>
 
-    <br>
-    <br>
-
-  <% if @game.winner.nil? %>
-    <div class="text-center">
-      <%= form_for @game do |f| %>
-        <%= submit_tag "Hit", :class => 'btn btn-primary' %>
-        <%= submit_tag "Stand", :class => 'btn btn-primary' %>
-        <%= submit_tag "Split", :class => 'btn btn-primary' %>
-        <%= submit_tag "Double Down", :class => 'btn btn-primary' %>
-      <% end %>
-    </div>
-  <% end %>
-
+  <br>
   <br>
 
+<% if @game.winner.nil? %>
   <div class="text-center">
-    Chips <%= @user.chips %>
+    <%= form_for @game do |f| %>
+      <%= submit_tag "Hit", :class => 'btn btn-primary' %>
+      <%= submit_tag "Stand", :class => 'btn btn-primary' %>
+      <%= submit_tag "Split", :class => 'btn btn-primary' %>
+      <%= submit_tag "Double Down", :class => 'btn btn-primary' %>
+    <% end %>
   </div>
+<% end %>
+
+<br>
+
+<div class="text-center">
+  Chips <%= @user.chips %>
+</div>
 
 <% end %>
