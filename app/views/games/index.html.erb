@@ -1,18 +1,6 @@
 <div class="text-center">
   <h1>Welcome <%= "#{current_user.first_name} #{current_user.last_name}" %>!</h1>
 
-  <p>
-    Account info
-  </p>
-
-  <p>
-    Stats?
-  </p>
-
-  <p>
-    Different game modes? Classic and training?
-  </p>
-
   <%= form_for Game.new do |f| %>
     <%= f.submit class: "btn btn-primary" %>
   <% end %>

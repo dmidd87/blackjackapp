@@ -20,31 +20,29 @@
 Hand Value : <%= @dealer_cards_value %>
 </div>
 
-  <br>
-  <br>
-  <br>
+<br>
+<br>
+<br>
 
-  <% if @game.winner %>
-
-    <div class="text-center">
-      <h3>Game over</h3>
-      <br>
-      <%= submit_tag "New game", :class => 'btn btn-primary' %>
-    </div>
-
-  <% end %>
-
-  <h1 class="text-center"><%= current_user.first_name  %></h1>
-    <div class="text-center">
-    <% @player_cards.each do |card| %>
-      <p class="card <%= card.name %>-<%= card.suit %>"></p>
-    <% end %>
+<% if @game.winner %>
+  <div class="text-center">
+    <h3>Game over</h3>
     <br>
-  Hand Value : <%= @player_cards_value %>
-    </div>
+    <%= submit_tag "New game", :class => 'btn btn-primary' %>
+  </div>
+<% end %>
 
+<h1 class="text-center"><%= current_user.first_name  %></h1>
+<div class="text-center">
+    <% @player_cards.each do |card| %>
+    <p class="card <%= card.name %>-<%= card.suit %>"></p>
+  <% end %>
   <br>
-  <br>
+  Hand Value : <%= @player_cards_value %>
+</div>
+
+<br>
+<br>
 
 <% if @game.winner.nil? %>
   <div class="text-center">
