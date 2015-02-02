@@ -32,7 +32,7 @@ Hand Value : <%= @dealer_cards_value %>
   </div>
 <% end %>
 
-<h1 class="text-center"><%= current_user.first_name  %></h1>
+<h1 class="text-center"><%= current_user.first_name %></h1>
 <div class="text-center">
     <% @player_cards.each do |card| %>
     <p class="card <%= card.name %>-<%= card.suit %>"></p>
