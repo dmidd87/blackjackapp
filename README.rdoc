@@ -9,6 +9,7 @@ Add logic to games#update to progress the hand
   eventually update the winner attribute of the games table
 
 
-#ace logic
+#model test
+#ace logic #if hand is greater than 21 and has an ace make the value one
 #natural blackjack logic(facedown card check)
 #def split 1/29/2015
