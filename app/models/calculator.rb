@@ -13,6 +13,33 @@ class Calculator
     @session = session
   end
 
+  def run
+    if params[:commit] == "Deal Cards"
+      setup_new_game
+    end
+
+    self.game = Game.find(params[:id])
+    self.cards = Card.where(game_id: game.id)
+
+    self.dealer_cards = cards.select{|card| card.player == 'dealer'}
+    self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
+    self.player_cards = cards.select{|card| card.player == 'you' }
+    self.player_cards_value = Card.get_value_of_cards(player_cards)
+
+    self.hit
+    self.stand
+    self.doubledown
+
+    {
+      game: game,
+      dealer_cards_value: dealer_cards_value,
+      player_cards_value: player_cards_value,
+      cards: cards,
+    }
+  end
+
+  # private below here....
+
   def has_blackjack
     if self.player_cards_value == 21
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
@@ -140,31 +167,6 @@ class Calculator
       self.player_rules
       self.dealer_rules
     end
-  end
-
-  def run
-    if params[:commit] == "Deal Cards"
-      setup_new_game
-    end
-
-    self.game = Game.find(params[:id])
-    self.cards = Card.where(game_id: game.id)
-
-    self.dealer_cards = cards.select{|card| card.player == 'dealer'}
-    self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
-    self.player_cards = cards.select{|card| card.player == 'you' }
-    self.player_cards_value = Card.get_value_of_cards(player_cards)
-
-    self.hit
-    self.stand
-    self.doubledown
-
-    {
-      game: game,
-      dealer_cards_value: dealer_cards_value,
-      player_cards_value: player_cards_value,
-      cards: cards,
-    }
   end
 
   def setup_new_game
