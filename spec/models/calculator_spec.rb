@@ -15,19 +15,21 @@ describe Calculator do
   end
 
   describe "#stand" do
-
     it 'validates that the stand button doesnt give any cards' do
-
       game = Game.create!
       params = {commit: "Deal Cards", id: game.id}
-      cardone = Card.create!(points:11, suit:'club', name:'Ace', player:'you')
+      cardone = Card.create!(points:11, suit:'club', name:'ace', player:'you')
       cardtwo = Card.create!(points:9, suit:'club', name:'nine', player:'you')
-      playercards = [cardone, cardtwo]
+      cardthree = Card.create!(points:10, suit:'club', name:'ten', player:'dealer')
+      cardfour = Card.create!(points:5, suit:'club', name:'five', player:'dealer')
+      params = {commit: "Stand", id: game.id}
       calc = Calculator.new(params, {})
 
       calc.run
 
-      expect(calc.cards.points)to eq(20)
+      cardfive = Card.create!(points:10, suit:'heart', name:'ten', player:'dealer')
+
+      expect(calc.player_cards.length).to eq(2)
     end
 
     it 'validates when it runs the dealers hand that if the dealer busts the player wins' do

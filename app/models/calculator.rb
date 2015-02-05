@@ -93,21 +93,6 @@ class Calculator
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
     end
-    if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
-      Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-      self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-      self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-    end
-    if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
-      Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-      self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-      self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-    end
-    if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
-      Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-      self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-      self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-    end
     if self.dealer_cards_value >= 17 && self.dealer_cards_value > self.player_cards_value && self.dealer_cards_value < 20
       self.game.winner = 'dealer'
       self.game.save
@@ -150,6 +135,7 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      self.player_rules
       self.has_blackjack
       self.dealer_rules
     end
