@@ -89,7 +89,7 @@ describe Calculator do
       Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
 
-      
+      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})
@@ -107,6 +107,8 @@ describe Calculator do
 
       Card.create!(game: game, points:4, suit:'heart', name:'ten', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
+
+      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})

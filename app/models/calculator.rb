@@ -25,7 +25,6 @@ class Calculator
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
     self.player_cards = cards.select{|card| card.player == 'you' }
     self.player_cards_value = Card.get_value_of_cards(player_cards)
-    binding.pry
     self.hit
     self.stand
     self.doubledown
@@ -97,13 +96,13 @@ class Calculator
   end
 
   def dealer_rules
-    #46.times do
+    6.times do
       if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
         Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
         self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
         self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       end
-    #end
+    end
     if self.dealer_cards_value >= 17 && self.dealer_cards_value > self.player_cards_value && self.dealer_cards_value < 20
       self.game.winner = 'dealer'
       self.game.save
