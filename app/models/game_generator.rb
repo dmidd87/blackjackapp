@@ -315,7 +315,5 @@ class GameGenerator
         :name => 'ace'
       },
     ])
-
   end
-
 end

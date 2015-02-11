@@ -6,8 +6,8 @@ class Card < ActiveRecord::Base
     cards.select(&:face_up?).map(&:points).inject(:+)
   end
 
-  def self.get_four_random_cards(deck_cards, user_id)
-    selected_cards = deck_cards.shuffle[0..3]
+  def self.get_four_random_cards(cards_in_deck, user_id)
+    selected_cards = cards_in_deck.shuffle[0..3]
     player_cards = selected_cards[0..1]
     dealer_cards = selected_cards[2..3]
 
@@ -24,13 +24,13 @@ class Card < ActiveRecord::Base
     [player_cards, dealer_cards]
   end
 
-  def self.give_player_a_card(deck_cards)
-    new_card = deck_cards.shuffle[0]
+  def self.give_player_a_card(cards_in_deck)
+    new_card = cards_in_deck.shuffle[0]
     new_card.update(player: 'you')
   end
 
-  def self.run_dealers_hand(game, deck_cards, dealer_cards_value, player_cards_value)
-    new_card = deck_cards.shuffle[0]
+  def self.run_dealers_hand(game, cards_in_deck, dealer_cards_value, player_cards_value)
+    new_card = cards_in_deck.shuffle[0]
     new_card.update(player: 'dealer')
   end
 end

@@ -25,7 +25,7 @@ class Calculator
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
     self.player_cards = cards.select{|card| card.player == 'you' }
     self.player_cards_value = Card.get_value_of_cards(player_cards)
-
+    binding.pry
     self.hit
     self.stand
     self.doubledown
@@ -38,7 +38,11 @@ class Calculator
     }
   end
 
-  # private below here....
+  def cards_in_deck
+    self.cards.select do |card|
+      card.player.nil?
+    end
+  end
 
   def has_blackjack
     if self.player_cards_value == 21
@@ -74,9 +78,14 @@ class Calculator
       self.game.save
     end
     if self.dealer_cards_value == 21 && self.player_cards_value == 21
-      self.game.winner = 'push'
+      win('push')
       self.game.save
     end
+  end
+
+  def win(name)
+    self.game.winner = name
+    # Counter.count(self.cards)
   end
 
   def player_rules
@@ -88,11 +97,13 @@ class Calculator
   end
 
   def dealer_rules
-    if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
-      Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-      self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-      self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-    end
+    #46.times do
+      if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
+        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      end
+    #end
     if self.dealer_cards_value >= 17 && self.dealer_cards_value > self.player_cards_value && self.dealer_cards_value < 20
       self.game.winner = 'dealer'
       self.game.save
@@ -117,7 +128,7 @@ class Calculator
 
   def hit
     if params[:commit] == "Hit"
-      Card.give_player_a_card(self.cards)
+      Card.give_player_a_card(self.cards_in_deck)
       self.cards = Card.where(game_id: self.game.id)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
@@ -143,7 +154,7 @@ class Calculator
 
   def doubledown
     if params[:commit] == "Double Down"
-      Card.give_player_a_card(cards)
+      Card.give_player_a_card(self.cards_in_deck)
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
@@ -159,6 +170,6 @@ class Calculator
     GameGenerator.generate_cards(params[:id])
     self.game = Game.find(params[:id])
     self.cards = game.cards
-    Card.get_four_random_cards(cards, session[:user_id])
+    Card.get_four_random_cards(cards_in_deck, session[:user_id])
   end
 end
