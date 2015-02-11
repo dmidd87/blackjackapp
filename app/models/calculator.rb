@@ -50,34 +50,16 @@ class Calculator
         self.game.winner = 'push'
         self.game.save
       end
-      if self.dealer_cards_value < 21
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      end
-      if self.dealer_cards_value < 21
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      end
-      if self.dealer_cards_value < 21
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      end
-      if self.dealer_cards_value < 21
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      8.times do
+        if self.dealer_cards_value < 21
+          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+          self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+          self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+        end
       end
     end
-
     if self.dealer_cards_value == 21 && self.player_cards_value < 21
       self.game.winner = 'dealer'
-      self.game.save
-    end
-    if self.dealer_cards_value == 21 && self.player_cards_value == 21
-      win('push')
       self.game.save
     end
   end
@@ -127,39 +109,39 @@ class Calculator
 
   def hit
     if params[:commit] == "Hit"
+      self.has_blackjack
       Card.give_player_a_card(self.cards_in_deck)
       self.cards = Card.where(game_id: self.game.id)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      self.has_blackjack
       self.player_rules
     end
   end
 
   def stand
     if params[:commit] == "Stand"
+      self.has_blackjack
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
-      self.has_blackjack
       self.dealer_rules
     end
   end
 
   def doubledown
     if params[:commit] == "Double Down"
+      self.has_blackjack
       Card.give_player_a_card(self.cards_in_deck)
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      self.has_blackjack
       self.player_rules
       self.dealer_rules
     end
