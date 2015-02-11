@@ -50,13 +50,17 @@ class Calculator
         self.game.winner = 'push'
         self.game.save
       end
-      8.times do
+    8.times do
         if self.dealer_cards_value < 21
           Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
           self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
           self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
         end
       end
+    end
+    if self.player_cards_value == 21 && player_cards_value > dealer_cards_value
+      self.game.winner = 'you'
+      self.game.save
     end
     if self.dealer_cards_value == 21 && self.player_cards_value < 21
       self.game.winner = 'dealer'

@@ -67,16 +67,19 @@ describe Calculator do
       game = Game.create!
 
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
-      Card.create!(game: game, points:10, suit:'heart', name:'nine', player:'you')
+      Card.create!(game: game, points:10, suit:'heart', name:'ten', player:'you')
 
-      @player_cards_value = Card.get_value_of_cards(@player_cards)
+      Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
+      Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
-      Card.create!(game: game, points:4, suit:'heart', name:'ten', player:'dealer')
-      Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
+      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
 
+      params = {id: game.id}
       calc = Calculator.new(params, {})
 
       calc.run
+
+      expect(game.reload.winner).to eq("you")
     end
   end
 
@@ -100,6 +103,7 @@ describe Calculator do
     end
 
     it 'validates that if the user has 21 they cannot hit' do
+      #Right now it only registers this if a player tries to click a button, need to have automated
       game = Game.create!
 
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
@@ -127,6 +131,8 @@ describe Calculator do
       Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
+      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
+
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})
 
@@ -143,6 +149,10 @@ describe Calculator do
 
       Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
+
+      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight'),
+      Card.create!(game: game, points:9, suit:'club', name:'nine')
+
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})
@@ -167,6 +177,8 @@ describe Calculator do
 
       Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
+
+      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
 
       params = {commit: "Double Down", id: game.id}
       calc = Calculator.new(params, {})
