@@ -6,314 +6,366 @@ class GameGenerator
         :game_id => game_id,
         :points => 2,
         :suit => 'club',
-        :name => 'two'
+        :name => 'two',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 2,
         :suit => 'spade',
-        :name => 'two'
+        :name => 'two',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 2,
         :suit => 'heart',
-        :name => 'two'
+        :name => 'two',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 2,
         :suit => 'diamond',
-        :name => 'two'
+        :name => 'two',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 3,
         :suit => 'club',
-        :name => 'three'
+        :name => 'three',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 3,
         :suit => 'spade',
-        :name => 'three'
+        :name => 'three',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 3,
         :suit => 'heart',
-        :name => 'three'
+        :name => 'three',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 3,
         :suit => 'diamond',
-        :name => 'three'
+        :name => 'three',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 4,
         :suit => 'club',
-        :name => 'four'
+        :name => 'four',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 4,
         :suit => 'spade',
-        :name => 'four'
+        :name => 'four',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 4,
         :suit => 'heart',
-        :name => 'four'
+        :name => 'four',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 4,
         :suit => 'diamond',
-        :name => 'four'
+        :name => 'four',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 5,
         :suit => 'club',
-        :name => 'five'
+        :name => 'five',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 5,
         :suit => 'spade',
-        :name => 'five'
+        :name => 'five',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 5,
         :suit => 'heart',
-        :name => 'five'
+        :name => 'five',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 5,
         :suit => 'diamond',
-        :name => 'five'
+        :name => 'five',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 6,
         :suit => 'club',
-        :name => 'six'
+        :name => 'six',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 6,
         :suit => 'spade',
-        :name => 'six'
+        :name => 'six',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 6,
         :suit => 'heart',
-        :name => 'six'
+        :name => 'six',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 6,
         :suit => 'diamond',
-        :name => 'six'
+        :name => 'six',
+        :count_value => 1
       },
       {
         :game_id => game_id,
         :points => 7,
         :suit => 'club',
-        :name => 'seven'
+        :name => 'seven',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 7,
         :suit => 'spade',
-        :name => 'seven'
+        :name => 'seven',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 7,
         :suit => 'heart',
-        :name => 'seven'
+        :name => 'seven',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 7,
         :suit => 'diamond',
-        :name => 'seven'
+        :name => 'seven',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 8,
         :suit => 'club',
-        :name => 'eight'
+        :name => 'eight',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 8,
         :suit => 'spade',
-        :name => 'eight'
+        :name => 'eight',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 8,
         :suit => 'heart',
-        :name => 'eight'
+        :name => 'eight',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 8,
         :suit => 'diamond',
-        :name => 'eight'
+        :name => 'eight',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 9,
         :suit => 'club',
-        :name => 'nine'
+        :name => 'nine',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 9,
         :suit => 'spade',
-        :name => 'nine'
+        :name => 'nine',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 9,
         :suit => 'heart',
-        :name => 'nine'
+        :name => 'nine',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 9,
         :suit => 'diamond',
-        :name => 'nine'
+        :name => 'nine',
+        :count_value => 0
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'club',
-        :name => 'ten'
+        :name => 'ten',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'spade',
-        :name => 'ten'
+        :name => 'ten',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'heart',
-        :name => 'ten'
+        :name => 'ten',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'diamond',
-        :name => 'ten'
+        :name => 'ten',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'club',
-        :name => 'jack'
+        :name => 'jack',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'spade',
-        :name => 'jack'
+        :name => 'jack',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'heart',
-        :name => 'jack'
+        :name => 'jack',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'diamond',
-        :name => 'jack'
+        :name => 'jack',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'club',
-        :name => 'queen'
+        :name => 'queen',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'spade',
-        :name => 'queen'
+        :name => 'queen',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'heart',
-        :name => 'queen'
+        :name => 'queen',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'diamond',
-        :name => 'queen'
+        :name => 'queen',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'club',
-        :name => 'king'
+        :name => 'king',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'spade',
-        :name => 'king'
+        :name => 'king',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'heart',
-        :name => 'king'
+        :name => 'king',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 10,
         :suit => 'diamond',
-        :name => 'king'
+        :name => 'king',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 11,
         :suit => 'club',
-        :name => 'ace'
+        :name => 'ace',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 11,
         :suit => 'spade',
-        :name => 'ace'
+        :name => 'ace',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 11,
         :suit => 'heart',
-        :name => 'ace'
+        :name => 'ace',
+        :count_value => -1
       },
       {
         :game_id => game_id,
         :points => 11,
         :suit => 'diamond',
-        :name => 'ace'
-      },
+        :name => 'ace',
+        :count_value => -1
+      }
     ])
   end
 end
