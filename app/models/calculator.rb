@@ -86,13 +86,6 @@ class Calculator
   end
 
   def dealer_rules
-    6.times do
-      if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      end
-    end
     if self.dealer_cards_value >= 17 && self.dealer_cards_value > self.player_cards_value && self.dealer_cards_value < 20
       self.game.winner = 'dealer'
       self.game.save
@@ -109,9 +102,28 @@ class Calculator
       self.game.winner = 'dealer'
       self.game.save
     end
+    if self.dealer_cards_value >= 17 && self.player_cards_value == self.dealer_cards_value && self.playercards_value < 21 && self.dealer_cards_value < 21
+      self.game.winner = 'push'
+      self.game.save
+    end
     if dealer_cards_value == player_cards_value && dealer_cards_value < 21 && player_cards_value < 21
       game.winner = 'push'
       game.save
+    end
+    6.times do
+      if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
+        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      end
+      if self.dealer_cards_value >= 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <=21
+        game.winner = 'you'
+        game.save
+      end
+      if self.dealer_cards_value >= 17 && self.player_cards_value < self.dealer_cards_value && self.dealer_cards_value <=21
+        game.winner = 'dealer'
+        game.save
+      end
     end
   end
 

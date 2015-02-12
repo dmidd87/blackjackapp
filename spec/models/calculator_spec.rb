@@ -23,7 +23,7 @@ describe Calculator do
       cardfour = Card.create!(game: game, points:5, suit:'club', name:'five', player:'dealer')
 
       params = {commit: "Stand", id: game.id}
-      
+
       calc = Calculator.new(params, {})
 
       calc.run
@@ -64,7 +64,7 @@ describe Calculator do
       expect(game.reload.winner).to eq("dealer")
     end
 
-    it 'validates that if the user hits 21 it automatically makes them stand' do
+    it 'validates that if the user hits 21 it automatically runs the dealers hand' do
       pending
       game = Game.create!
 
@@ -74,9 +74,9 @@ describe Calculator do
       Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
-      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
 
-      params = {id: game.id}
+      params = {commit: "Stand", id: game.id}
       calc = Calculator.new(params, {})
 
       calc.run
@@ -94,7 +94,7 @@ describe Calculator do
       Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
 
-      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})
@@ -105,7 +105,7 @@ describe Calculator do
     end
 
     it 'validates that if the user has 21 they cannot hit' do
-      #Right now it only registers this if a player tries to click a button, need to have automated
+
       game = Game.create!
 
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
@@ -114,7 +114,9 @@ describe Calculator do
       Card.create!(game: game, points:4, suit:'heart', name:'ten', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
 
-      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:8, suit:'diamond', name:'eight')
+
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})
@@ -133,7 +135,7 @@ describe Calculator do
       Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
-      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, {})
@@ -152,7 +154,7 @@ describe Calculator do
       Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
-      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight'),
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
       Card.create!(game: game, points:9, suit:'club', name:'nine')
 
 
@@ -171,16 +173,16 @@ describe Calculator do
   end
 
   describe "Double Down" do
-    it 'validates that the user receives a card' do
+    it 'validates that the user receives a card and wins' do
       game = Game.create!
 
       Card.create!(game: game, points:9, suit:'club', name:'nine', player:'you')
       Card.create!(game: game, points:2, suit:'heart', name:'two', player:'you')
 
-      Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
+      Card.create!(game: game, points:10, suit:'heart', name:'ten', player:'dealer')
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
-      deck_cards = Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
 
       params = {commit: "Double Down", id: game.id}
       calc = Calculator.new(params, {})
@@ -188,6 +190,28 @@ describe Calculator do
       calc.run
 
       expect(calc.player_cards.length).to eq(3)
+      expect(game.reload.winner).to eq('you')
+    end
+
+    it 'validates that if the dealer has 17 and the player doubles down and gets 18 player wins' do
+      game = Game.create!
+
+      Card.create!(game: game, points:2, suit:'spade', name:'five', player:'you')
+      Card.create!(game: game, points:6, suit:'heart', name:'six', player:'you')
+
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten', player:'dealer')
+      Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
+
+      Card.create!(game: game, points:10, suit:'spade', name:'ten')
+
+      params = {commit: "Double Down", id: game.id}
+      calc = Calculator.new(params, {})
+
+      calc.run
+
+      expect(calc.dealer_cards.length).to eq(2)
+      expect(calc.player_cards.length).to eq(3)
+      expect(game.reload.winner).to eq("you")
     end
   end
 end

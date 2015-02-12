@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'optipng', '~> 0.2.1'
 
+gem 'byebug'
+
 gem 'css_sprite', '~> 2.3.0'
 
 gem 'mini_magick', '~> 4.0.1'
