@@ -88,14 +88,12 @@ class Calculator
   def dealer_rules
     10.times do
       #all the conditions where the dealer takes a card and make it loop
-      if self.dealer_cards_value < 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 20
-        Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
-        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-      end
-      if self.dealer_cards_value >= 17 && self.dealer_cards_value < 21 && self.dealer_cards_value > self.player_cards_value
-        self.game.winner = 'dealer'
-        self.game.save
+      10.times do
+        if self.dealer_cards_value < 17
+          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+          self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+          self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+        end
       end
       #all the conditions where the winner is you
       if dealer_cards_value > 21 && player_cards_value <= 21
@@ -111,18 +109,14 @@ class Calculator
         self.game.winner = 'push'
         self.game.save
       end
-      if dealer_cards_value == player_cards_value && dealer_cards_value < 21 && player_cards_value < 21
-        game.winner = 'push'
-        game.save
-      end
       #all the conditions where the winner is dealer
-      if self.dealer_cards_value >= 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <=21
-        game.winner = 'you'
-        game.save
+      if self.dealer_cards_value >= 17 && self.dealer_cards_value < 21 && self.dealer_cards_value > self.player_cards_value
+        self.game.winner = 'dealer'
+        self.game.save
       end
       if self.dealer_cards_value >= 17 && self.player_cards_value < self.dealer_cards_value && self.dealer_cards_value <=21
-        game.winner = 'dealer'
-        game.save
+        self.game.winner = 'dealer'
+        self.game.save
       end
     end
   end
