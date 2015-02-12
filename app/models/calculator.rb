@@ -18,6 +18,10 @@ class Calculator
       setup_new_game
     end
 
+    if params[:commit] == "New Hand"
+      new_hand
+    end
+
     self.game = Game.find(params[:id])
     self.cards = Card.where(game_id: game.id)
 
@@ -156,5 +160,14 @@ class Calculator
     self.game = Game.find(params[:id])
     self.cards = game.cards
     Card.get_four_random_cards(cards_in_deck, session[:user_id])
+  end
+
+  def new_hand
+    if params[:commit] == "New Hand"
+      game = Game.new
+      self.dealer_cards = game.cards
+      Card.get_four_random_cards(cards_in_deck, session[:user_id])
+      self.game = Game.find(params[:id])
+    end
   end
 end

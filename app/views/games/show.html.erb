@@ -2,7 +2,7 @@
   <h1 class="text-center">Play some blackjack</h1>
   <%= form_for @game do |f| %>
     <div class="text-center">
-      <%= submit_tag "Deal Cards", :class => 'btn btn-primary' %>
+      <%= submit_tag "Deal Cards", :class => 'btn btn-primary'%>
     </div>
   <% end %>
 <% else %>
@@ -28,7 +28,11 @@ Hand Value : <%= @dealer_cards_value %>
   <div class="text-center">
     <h3>Game over</h3>
     <br>
-    <%= submit_tag "New game", :class => 'btn btn-primary' %>
+    <%= form_for @game do |f| %>
+      <div class="text-center">
+        <%= submit_tag "New Hand", :class => 'btn btn-primary'%>
+      </div>
+    <% end %>
   </div>
 <% end %>
 

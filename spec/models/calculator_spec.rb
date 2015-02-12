@@ -21,7 +21,9 @@ describe Calculator do
       cardtwo = Card.create!(game: game, points:9, suit:'club', name:'nine', player:'you')
       cardthree = Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
       cardfour = Card.create!(game: game, points:5, suit:'club', name:'five', player:'dealer')
+
       params = {commit: "Stand", id: game.id}
+      
       calc = Calculator.new(params, {})
 
       calc.run
