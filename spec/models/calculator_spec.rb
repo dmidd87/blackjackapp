@@ -255,5 +255,27 @@ describe Calculator do
       expect(calc.player_cards.length).to eq(3)
       expect(game.reload.winner).to eq("push")
     end
+
+    it 'validates that if the player doubles down they receive a card and the dealer runs their hand receiving one card and losing' do
+      game = Game.create!
+
+      Card.create!(game: game, points:7, suit:'spade', name:'seven', player:'you')
+      Card.create!(game: game, points:7, suit:'heart', name:'seven', player:'you')
+
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten', player:'dealer')
+      Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
+
+      Card.create!(game: game, points:10, suit:'heart', name:'ten')
+      Card.create!(game: game, points:6, suit:'spade', name:'six')
+
+      params = {commit: "Double Down", id: game.id}
+      calc = Calculator.new(params, {})
+
+      calc.run
+      
+      expect(calc.dealer_cards.length).to eq(3)
+      expect(calc.player_cards.length).to eq(3)
+      expect(game.reload.winner).to eq("you")
+    end
   end
 end
