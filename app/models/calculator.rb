@@ -62,7 +62,7 @@ class Calculator
         end
       end
     end
-    if self.player_cards_value == 21 && player_cards_value > dealer_cards_value
+    if self.player_cards_value == 21 && player_cards_value > dealer_cards_value && dealer_cards_value < 21
       self.game.winner = 'you'
       self.game.save
     end

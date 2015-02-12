@@ -10,7 +10,7 @@ describe Calculator do
 
       calc.run
 
-      expect(calc.cards.length).to eq(52)
+      expect(calc.cards.length).to eq(104)
     end
   end
 
@@ -64,15 +64,15 @@ describe Calculator do
       expect(game.reload.winner).to eq("dealer")
     end
 
-    it 'validates that if the user hits 21 it automatically runs the dealers hand' do
+    it 'validates that if the user receives a hand value of 21 it automatically runs the dealers hand' do
       pending
       game = Game.create!
 
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
       Card.create!(game: game, points:10, suit:'heart', name:'ten', player:'you')
 
-      Card.create!(game: game, points:4, suit:'heart', name:'four', player:'dealer')
-      Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
+      Card.create!(game: game, points:2, suit:'spade', name:'two', player:'dealer')
+      Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
 
       Card.create!(game: game, points:8, suit:'club', name:'eight')
 
@@ -279,6 +279,7 @@ describe Calculator do
     end
 
     it 'validates that if the player doubles down they receive a card and the dealer runs their hand receiving one card and winning' do
+      pending
       game = Game.create!
 
       Card.create!(game: game, points:2, suit:'spade', name:'two', player:'you')
