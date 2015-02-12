@@ -213,5 +213,47 @@ describe Calculator do
       expect(calc.player_cards.length).to eq(3)
       expect(game.reload.winner).to eq("you")
     end
+
+    it 'validates that if the dealer has 17 and the player doubles down and gets 16 dealer wins' do
+      game = Game.create!
+
+      Card.create!(game: game, points:2, suit:'spade', name:'five', player:'you')
+      Card.create!(game: game, points:4, suit:'heart', name:'four', player:'you')
+
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten', player:'dealer')
+      Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
+
+      Card.create!(game: game, points:10, suit:'spade', name:'ten')
+
+      params = {commit: "Double Down", id: game.id}
+      calc = Calculator.new(params, {})
+
+      calc.run
+
+      expect(calc.dealer_cards.length).to eq(2)
+      expect(calc.player_cards.length).to eq(3)
+      expect(game.reload.winner).to eq("dealer")
+    end
+
+    it 'validates that if the dealer has 17 and the player doubles down and gets 17 it is a push' do
+      game = Game.create!
+
+      Card.create!(game: game, points:2, suit:'spade', name:'two', player:'you')
+      Card.create!(game: game, points:5, suit:'heart', name:'five', player:'you')
+
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten', player:'dealer')
+      Card.create!(game: game, points:7, suit:'club', name:'six', player:'dealer')
+
+      Card.create!(game: game, points:10, suit:'spade', name:'ten')
+
+      params = {commit: "Double Down", id: game.id}
+      calc = Calculator.new(params, {})
+
+      calc.run
+
+      expect(calc.dealer_cards.length).to eq(2)
+      expect(calc.player_cards.length).to eq(3)
+      expect(game.reload.winner).to eq("push")
+    end
   end
 end
