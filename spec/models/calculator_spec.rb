@@ -90,9 +90,7 @@ describe Calculator do
     end
   end
 
-
   describe "Hit" do
-
     it 'validates that if the user has 21 they cannot hit' do
 
       game = Game.create!
@@ -105,6 +103,7 @@ describe Calculator do
 
       Card.create!(game: game, points:8, suit:'club', name:'eight')
       Card.create!(game: game, points:8, suit:'diamond', name:'eight')
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten')
 
 
       params = {commit: "Hit", id: game.id}

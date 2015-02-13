@@ -153,7 +153,9 @@ class Calculator
   def hit
     if params[:commit] == "Hit"
       self.has_blackjack
-      Card.give_player_a_card(self.cards_in_deck)
+      if self.player_cards_value < 21
+        Card.give_player_a_card(self.cards_in_deck)
+      end
       self.cards = Card.where(game_id: self.game.id)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
