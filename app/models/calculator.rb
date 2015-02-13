@@ -41,6 +41,32 @@ class Calculator
     }
   end
 
+  def ace_for_player
+    #how do i check against the current array of cards to see if there is an ace
+    #if there is one ace && the player_cards_value total is > 21
+      #make that ace worth 1 point
+    #end
+    #if there are two aces && the player_cards_value total is > 21
+      #make one of the aces worth one point
+    #end
+    #if there are three aces && the player_cards_value total > 21
+      #make two of the aces worth one point
+    #end
+  end
+
+  def ace_for_dealer
+    #how do i check against the current array of cards to see if there is an ace
+    #if there is one ace && the player_cards_value total is > 21
+      #make that ace worth 1 point
+    #end
+    #if there are two aces && the player_cards_value total is > 21
+      #make one of the aces worth one point
+    #end
+    #if there are three aces && the player_cards_value total > 21
+      #make two of the aces worth one point
+    #end
+  end
+
   def cards_in_deck
     self.cards.select do |card|
       card.player.nil?
@@ -62,7 +88,7 @@ class Calculator
         end
       end
     end
-    if self.player_cards_value == 21 && player_cards_value > dealer_cards_value && dealer_cards_value < 21
+    if self.player_cards_value == 21 && dealer_cards_value < 21 && player_cards_value > dealer_cards_value
       self.game.winner = 'you'
       self.game.save
     end
@@ -90,15 +116,15 @@ class Calculator
       #all the conditions where the dealer takes a card and make it loop
       10.times do
         if self.dealer_cards_value < 17
-          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+          Card.run_dealers_hand(self.game, self.cards_in_deck, self.dealer_cards_value, self.player_cards_value)
           self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
           self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
         end
       end
       #all the conditions where the winner is you
       if dealer_cards_value > 21 && player_cards_value <= 21
-        game.winner = 'you'
-        game.save
+        self.game.winner = 'you'
+        self.game.save
       end
       if self.dealer_cards_value >= 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 21
         self.game.winner = 'you'

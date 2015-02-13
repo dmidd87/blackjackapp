@@ -7,6 +7,7 @@ class Card < ActiveRecord::Base
   end
 
   def self.get_four_random_cards(cards_in_deck, user_id)
+    raise 'You have to have at least 4 cards in the deck' unless cards_in_deck.length >= 4
     selected_cards = cards_in_deck.shuffle[0..3]
     player_cards = selected_cards[0..1]
     dealer_cards = selected_cards[2..3]

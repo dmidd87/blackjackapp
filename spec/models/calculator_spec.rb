@@ -17,10 +17,14 @@ describe Calculator do
   describe "#stand" do
     it 'validates that the stand button doesnt give any cards' do
       game = Game.create!
-      cardone = Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
-      cardtwo = Card.create!(game: game, points:9, suit:'club', name:'nine', player:'you')
-      cardthree = Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
-      cardfour = Card.create!(game: game, points:5, suit:'club', name:'five', player:'dealer')
+
+      Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
+      Card.create!(game: game, points:9, suit:'club', name:'nine', player:'you')
+
+      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
+      Card.create!(game: game, points:5, suit:'club', name:'five', player:'dealer')
+
+      Card.create!(game: game, points:4, suit:'diamond', name:'four')
 
       params = {commit: "Stand", id: game.id}
 
@@ -65,16 +69,16 @@ describe Calculator do
     end
 
     it 'validates that if the user receives a hand value of 21 it automatically runs the dealers hand' do
-      pending
       game = Game.create!
 
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
-      Card.create!(game: game, points:10, suit:'heart', name:'ten', player:'you')
+      Card.create!(game: game, points:10, suit:'spades', name:'ten', player:'you')
 
       Card.create!(game: game, points:2, suit:'spade', name:'two', player:'dealer')
       Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
 
-      Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:9, suit:'club', name:'nine')
+      Card.create!(game: game, points:9, suit:'diamond', name:'nine')
 
       params = {commit: "Stand", id: game.id}
       calc = Calculator.new(params, {})

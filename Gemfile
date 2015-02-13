@@ -16,6 +16,7 @@ gem 'rspec', '~> 3.1.0'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'
+  gem 'byebug'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
