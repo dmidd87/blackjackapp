@@ -10,7 +10,6 @@ describe Calculator do
 
       calc.run
 
-      expect(calc.cards.length).to eq(104)
     end
   end
 
@@ -69,6 +68,7 @@ describe Calculator do
     end
 
     it 'validates that if the user receives a hand value of 21 it automatically runs the dealers hand' do
+      #this test is giving the dealer the 11 when stand is hit
       game = Game.create!
 
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
@@ -85,28 +85,13 @@ describe Calculator do
 
       calc.run
 
+      expect(calc.player_cards.length).to eq(2)
       expect(game.reload.winner).to eq("you")
     end
   end
 
+
   describe "Hit" do
-    it 'validates that the user receives a card' do
-      game = Game.create!
-      Card.create!(game: game, points:2, suit:'club', name:'ace', player:'you')
-      Card.create!(game: game, points:3, suit:'club', name:'nine', player:'you')
-
-      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
-      Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
-
-      Card.create!(game: game, points:8, suit:'club', name:'eight')
-
-      params = {commit: "Hit", id: game.id}
-      calc = Calculator.new(params, {})
-
-      calc.run
-
-      expect(calc.player_cards.length).to eq(3)
-    end
 
     it 'validates that if the user has 21 they cannot hit' do
 
@@ -128,6 +113,24 @@ describe Calculator do
       calc.run
 
       expect(calc.player_cards.length).to eq(2)
+    end
+
+    it 'validates that the user receives a card' do
+      game = Game.create!
+      Card.create!(game: game, points:2, suit:'club', name:'ace', player:'you')
+      Card.create!(game: game, points:3, suit:'club', name:'nine', player:'you')
+
+      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
+      Card.create!(game: game, points:7, suit:'club', name:'five', player:'dealer')
+
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
+
+      params = {commit: "Hit", id: game.id}
+      calc = Calculator.new(params, {})
+
+      calc.run
+
+      expect(calc.player_cards.length).to eq(3)
     end
 
     it 'validates that if the user goes over 21 then the game is over and the winner is the dealer' do
@@ -283,7 +286,7 @@ describe Calculator do
     end
 
     it 'validates that if the player doubles down they receive a card and the dealer runs their hand receiving one card and winning' do
-      pending
+
       game = Game.create!
 
       Card.create!(game: game, points:2, suit:'spade', name:'two', player:'you')

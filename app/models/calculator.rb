@@ -41,31 +41,34 @@ class Calculator
     }
   end
 
-  def ace_for_player
-    #how do i check against the current array of cards to see if there is an ace
-    #if there is one ace && the player_cards_value total is > 21
-      #make that ace worth 1 point
-    #end
-    #if there are two aces && the player_cards_value total is > 21
-      #make one of the aces worth one point
-    #end
-    #if there are three aces && the player_cards_value total > 21
-      #make two of the aces worth one point
-    #end
-  end
-
-  def ace_for_dealer
-    #how do i check against the current array of cards to see if there is an ace
-    #if there is one ace && the player_cards_value total is > 21
-      #make that ace worth 1 point
-    #end
-    #if there are two aces && the player_cards_value total is > 21
-      #make one of the aces worth one point
-    #end
-    #if there are three aces && the player_cards_value total > 21
-      #make two of the aces worth one point
-    #end
-  end
+  # def ace_for_player
+  #   player_cards.each do |card|
+  #     if card(value: 11)
+  #   end
+  #
+  #   #if there is one ace && the player_cards_value total is > 21
+  #     #make that ace worth 1 point
+  #   #end
+  #   #if there are two aces && the player_cards_value total is > 21
+  #     #make one of the aces worth one point
+  #   #end
+  #   #if there are three aces && the player_cards_value total > 21
+  #     #make two of the aces worth one point
+  #   #end
+  # end
+  #
+  # def ace_for_dealer
+  #   #how do i check against the current array of cards to see if there is an ace
+  #   #if there is one ace && the player_cards_value total is > 21
+  #     #make that ace worth 1 point
+  #   #end
+  #   #if there are two aces && the player_cards_value total is > 21
+  #     #make one of the aces worth one point
+  #   #end
+  #   #if there are three aces && the player_cards_value total > 21
+  #     #make two of the aces worth one point
+  #   #end
+  # end
 
   def cards_in_deck
     self.cards.select do |card|
@@ -82,7 +85,7 @@ class Calculator
       end
     8.times do
         if self.dealer_cards_value < 21
-          Card.run_dealers_hand(self.game, self.cards, self.dealer_cards_value, self.player_cards_value)
+          Card.run_dealers_hand(self.game, self.cards_in_deck, self.dealer_cards_value, self.player_cards_value)
           self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
           self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
         end
