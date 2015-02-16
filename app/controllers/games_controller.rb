@@ -21,7 +21,7 @@ class GamesController < ApplicationController
   end
 
   def update
-    result = Calculator.calculate(params, session)
+    result = Calculator.calculate(params, current_user)
     @game = result[:game]
     @dealer_cards_value = result[:dealer_cards_value]
     @player_cards_value = result[:player_cards_value]

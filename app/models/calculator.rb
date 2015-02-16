@@ -1,16 +1,16 @@
 class Calculator
 
-  def self.calculate(params, session)
-    runner = new(params, session)
+  def self.calculate(params, current_user)
+    runner = new(params, current_user)
     runner.run
   end
 
-  attr_reader :params, :session
+  attr_reader :params, :current_user
   attr_accessor :game, :dealer_cards, :dealer_cards_value, :player_cards, :player_cards_value, :cards
 
-  def initialize(params, session)
+  def initialize(params, current_user)
     @params = params
-    @session = session
+    @current_user = current_user
   end
 
   def run
@@ -18,12 +18,12 @@ class Calculator
       setup_new_game
     end
 
+    self.game = Game.find(params[:id])
+    self.cards = Card.where(game_id: game.id)
+
     if params[:commit] == "New Hand"
       new_hand
     end
-
-    self.game = Game.find(params[:id])
-    self.cards = Card.where(game_id: game.id)
 
     self.dealer_cards = cards.select{|card| card.player == 'dealer'}
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
@@ -41,34 +41,17 @@ class Calculator
     }
   end
 
-  # def ace_for_player
-  #   player_cards.each do |card|
-  #     if card(value: 11)
-  #   end
-  #
-  #   #if there is one ace && the player_cards_value total is > 21
-  #     #make that ace worth 1 point
-  #   #end
-  #   #if there are two aces && the player_cards_value total is > 21
-  #     #make one of the aces worth one point
-  #   #end
-  #   #if there are three aces && the player_cards_value total > 21
-  #     #make two of the aces worth one point
-  #   #end
-  # end
-  #
-  # def ace_for_dealer
-  #   #how do i check against the current array of cards to see if there is an ace
-  #   #if there is one ace && the player_cards_value total is > 21
-  #     #make that ace worth 1 point
-  #   #end
-  #   #if there are two aces && the player_cards_value total is > 21
-  #     #make one of the aces worth one point
-  #   #end
-  #   #if there are three aces && the player_cards_value total > 21
-  #     #make two of the aces worth one point
-  #   #end
-  # end
+  def chip_diff
+    if self.game.winner == "you"
+      current_user.chips += 25
+      current_user.save
+    end
+    if self.game.winner == "dealer"
+      current_user.chips -= 25
+      current_user.save
+    end
+
+  end
 
   def cards_in_deck
     self.cards.select do |card|
@@ -162,6 +145,7 @@ class Calculator
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
+      self.chip_diff
     end
   end
 
@@ -175,6 +159,7 @@ class Calculator
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
       self.dealer_rules
+      self.chip_diff
     end
   end
 
@@ -189,6 +174,7 @@ class Calculator
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
       self.dealer_rules
+      self.chip_diff
     end
   end
 
@@ -196,15 +182,13 @@ class Calculator
     GameGenerator.generate_cards(params[:id])
     self.game = Game.find(params[:id])
     self.cards = game.cards
-    Card.get_four_random_cards(cards_in_deck, session[:user_id])
+    Card.get_four_random_cards(cards_in_deck, current_user.id)
   end
 
   def new_hand
     if params[:commit] == "New Hand"
-      game = Game.new
       self.dealer_cards = game.cards
-      Card.get_four_random_cards(cards_in_deck, session[:user_id])
-      self.game = Game.find(params[:id])
+      Card.get_four_random_cards(cards_in_deck, current_user.id)
     end
   end
 end
