@@ -71,6 +71,32 @@ describe Calculator do
 
       expect(current_user.chips).to eq(975)
     end
+
+    it 'verifies that when a player wins on a double down they win double the initial bet' do
+      game = Game.create!
+      current_user = User.create!(
+      first_name: "Test",
+      last_name: "User",
+      email_address: "test@test.com",
+      password: "password",
+      chips: 1000)
+
+      Card.create!(game: game, points:5, suit:'club', name:'five', player:'you')
+      Card.create!(game: game, points:5, suit:'diamond', name:'five', player:'you')
+
+      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
+      Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
+
+      Card.create!(game: game, points:11, suit:'diamond', name:'ace')
+
+      params = {commit: "Double Down", id: game.id}
+
+      calc = Calculator.new(params, current_user)
+
+      calc.run
+
+      expect(current_user.chips).to eq(1050)
+    end
   end
 
   describe "#stand" do
