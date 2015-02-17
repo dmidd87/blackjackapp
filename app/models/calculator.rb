@@ -55,7 +55,7 @@ class Calculator
     end
   end
 
-  def chip_diff
+  def chip_diff_double_down
     if self.game.winner == "you" && params[:commit] == "Double Down"
       current_user.chips += 50
       current_user.save
@@ -64,11 +64,14 @@ class Calculator
       current_user.chips -= 50
       current_user.save
     end
+  end
+
+  def chip_diff_stand
     if self.game.winner == "you" && params[:commit] == "Stand"
       current_user.chips += 25
       current_user.save
     end
-    if self.game.winner == "dealer"
+    if self.game.winner == "dealer" && params[:commit] = "Stand"
       current_user.chips -= 25
       current_user.save
     end
@@ -166,7 +169,7 @@ class Calculator
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
-      self.chip_diff
+      self.chip_diff_stand
       self.add_to_discard
     end
   end
@@ -181,7 +184,7 @@ class Calculator
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
       self.dealer_rules
-      self.chip_diff
+      self.chip_diff_stand
       self.add_to_discard
     end
   end
@@ -197,7 +200,7 @@ class Calculator
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
       self.dealer_rules
-      self.chip_diff
+      self.chip_diff_double_down
       self.add_to_discard
     end
   end
