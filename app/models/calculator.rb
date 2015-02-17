@@ -43,24 +43,25 @@ class Calculator
 
   def add_to_discard
     if self.game.winner?
-      discardplayercards = self.player_cards.select { |card| card.discard == false }
+      discardplayercards = self.cards.select { |card| card.discard == false }
+        discardplayercards.each do |t|
+          t.try(:update, discard: true)
+        end
 
-      discardplayercards.each do |t|
-        t.try(:update, discard: true)
-      end
-    end
-    if self.game.winner?
       discarddealercards = self.dealer_cards.select { |card| card.discard == false }
-      
-      discarddealercards.each do |t|
-        t.try(:update, discard: true)
-      end
+        discarddealercards.each do |t|
+          t.try(:update, discard: true)
+        end
     end
   end
 
   def chip_diff
     if self.game.winner == "you" && params[:commit] == "Double Down"
       current_user.chips += 50
+      current_user.save
+    end
+    if self.game.winner == "dealer" && params[:commit] == "Double Down"
+      current_user.chips -= 50
       current_user.save
     end
     if self.game.winner == "you" && params[:commit] == "Stand"
@@ -166,6 +167,7 @@ class Calculator
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       self.player_rules
       self.chip_diff
+      self.add_to_discard
     end
   end
 
@@ -196,6 +198,7 @@ class Calculator
       self.player_rules
       self.dealer_rules
       self.chip_diff
+      self.add_to_discard
     end
   end
 
