@@ -51,6 +51,16 @@ class Calculator
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
     end
+
+    if self.dealer_cards_value > 21
+      array = self.dealer_cards.select { |card| card.name == "ace" }
+      unless array.empty?
+        ace = array[0]
+        ace.points = 1
+      end
+      self.dealer_cards = self.dealer_cards.select{|card| card.player == 'dealer'}
+      self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
+    end
   end
 
   def add_to_discard
@@ -135,14 +145,13 @@ class Calculator
 
   def dealer_rules
     10.times do
-      #all the conditions where the dealer takes a card and make it loop
-      10.times do
-        if self.dealer_cards_value < 17
-          Card.run_dealers_hand(self.game, self.cards_in_deck, self.dealer_cards_value, self.player_cards_value)
-          self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-          self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-        end
+      if self.dealer_cards_value < 17
+        Card.run_dealers_hand(self.game, self.cards_in_deck, self.dealer_cards_value, self.player_cards_value)
+        self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+        self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
       end
+    end
+    10.times do
       #all the conditions where the winner is you
       if dealer_cards_value > 21 && player_cards_value <= 21
         self.game.winner = 'you'

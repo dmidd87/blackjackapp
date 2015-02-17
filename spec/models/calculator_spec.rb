@@ -15,6 +15,7 @@ describe Calculator do
       calc = Calculator.new(params, current_user)
 
       calc.run
+
     end
   end
 
@@ -196,7 +197,7 @@ describe Calculator do
       expect(game.reload.winner).to eq("dealer")
     end
 
-    it 'validates that if the user receives a hand value of 21 it will run the dealers hand if you hit stand' do
+    it 'validates that if the user receives a hand value of 21 it will run the dealers hand if you click stand' do
       game = Game.create!
 
       current_user = User.create!(
@@ -209,10 +210,9 @@ describe Calculator do
       Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
       Card.create!(game: game, points:10, suit:'spades', name:'ten', player:'you')
 
-      Card.create!(game: game, points:2, suit:'spade', name:'two', player:'dealer')
-      Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
+      Card.create!(game: game, points:10, suit:'heart', name:'ten', player:'dealer')
+      Card.create!(game: game, points:8, suit:'club', name:'eight', player:'dealer')
 
-      Card.create!(game: game, points:9, suit:'club', name:'nine')
       Card.create!(game: game, points:9, suit:'diamond', name:'nine')
 
       params = {commit: "Stand", id: game.id}
@@ -220,7 +220,6 @@ describe Calculator do
 
       calc.run
 
-      expect(calc.player_cards.length).to eq(2)
       expect(game.reload.winner).to eq("you")
     end
   end
