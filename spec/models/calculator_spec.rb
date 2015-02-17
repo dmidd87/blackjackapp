@@ -299,7 +299,7 @@ describe Calculator do
       Card.create!(game: game, points:7, suit:'club', name:'seven', player:'dealer')
 
       Card.create!(game: game, points:8, suit:'club', name:'eight')
-      Card.create!(game: game, points:9, suit:'club', name:'nine')
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten')
 
 
       params = {commit: "Hit", id: game.id}
@@ -518,23 +518,4 @@ describe Calculator do
       expect(game.reload.winner).to eq("dealer")
     end
   end
-
-  # describe "Split" do
-  #   it 'validates that when the user clicks split it takes two cards and creates two hands' do
-  #     game = Game.create!
-  #
-  #     Card.create!(game: game, points:8, suit:'spade', name:'eight', player:'you')
-  #     Card.create!(game: game, points:8, suit:'heart', name:'eight', player:'you')
-  #
-  #     Card.create!(game: game, points:3, suit:'diamond', name:'three', player:'dealer')
-  #     Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
-  #
-  #     params = {commit: "Split", id: game.id}
-  #     calc = Calculator.new(params, {})
-  #
-  #     calc.run
-  #
-  #     expect(calc.player_to_have_two_hands_with_one_card_each)
-  #   end
-  # end
 end

@@ -115,7 +115,7 @@ class Calculator
 
   def player_rules
     if self.player_cards_value > 21
-      self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+      self.dealer_cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       self.game.winner = 'dealer'
       self.game.save
     end
