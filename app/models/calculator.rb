@@ -41,9 +41,21 @@ class Calculator
     }
   end
 
+  def ace_catch
+    if self.player_cards_value > 21
+      array = self.player_cards.select { |card| card.name == "ace" }
+      unless array.empty?
+        ace = array[0]
+        ace.points = 1
+      end
+      self.player_cards = self.cards.select{|card| card.player == 'you'}
+      self.player_cards_value = Card.get_value_of_cards(player_cards)
+    end
+  end
+
   def add_to_discard
     if self.game.winner?
-      discardplayercards = self.cards.select { |card| card.discard == false }
+      discardplayercards = self.player_cards.select { |card| card.discard == false }
         discardplayercards.each do |t|
           t.try(:update, discard: true)
         end
@@ -168,6 +180,7 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      self.ace_catch
       self.player_rules
       self.chip_diff_stand
       self.add_to_discard
@@ -182,6 +195,7 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      self.ace_catch
       self.player_rules
       self.dealer_rules
       self.chip_diff_stand
@@ -198,6 +212,7 @@ class Calculator
       self.player_cards_value = Card.get_value_of_cards(player_cards)
       self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
       self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+      self.ace_catch
       self.player_rules
       self.dealer_rules
       self.chip_diff_double_down

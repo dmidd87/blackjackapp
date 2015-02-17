@@ -15,7 +15,6 @@ describe Calculator do
       calc = Calculator.new(params, current_user)
 
       calc.run
-
     end
   end
 
@@ -347,6 +346,35 @@ describe Calculator do
       calc.run
 
       expect(calc.player_cards.length).to eq(4)
+    end
+
+    it 'validates that if the user is over 21 after hitting and they have an ace, that aces value defaults to 1' do
+      game = Game.create!
+
+      current_user = User.create!(
+      first_name: "Test",
+      last_name: "User",
+      email_address: "test@test.com",
+      password: "password",
+      chips: 1000)
+
+      Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
+      Card.create!(game: game, points:4, suit:'heart', name:'four', player:'you')
+
+      Card.create!(game: game, points:10, suit:'heart', name:'four', player:'dealer')
+      Card.create!(game: game, points:9, suit:'club', name:'seven', player:'dealer')
+
+      Card.create!(game: game, points:8, suit:'club', name:'eight')
+      Card.create!(game: game, points:9, suit:'club', name:'nine')
+      Card.create!(game: game, points:10, suit:'diamond', name:'ten')
+
+      params = {commit: "Hit", id: game.id}
+      calc = Calculator.new(params, current_user)
+
+      calc.run
+
+      expect(calc.player_cards.length).to eq(3)
+      expect(calc.game.winner).to eq(nil)
     end
   end
 
