@@ -41,6 +41,23 @@ class Calculator
     }
   end
 
+  def add_to_discard
+    if self.game.winner?
+      discardplayercards = self.player_cards.select { |card| card.discard == false }
+
+      discardplayercards.each do |t|
+        t.try(:update, discard: true)
+      end
+    end
+    if self.game.winner?
+      discarddealercards = self.dealer_cards.select { |card| card.discard == false }
+      
+      discarddealercards.each do |t|
+        t.try(:update, discard: true)
+      end
+    end
+  end
+
   def chip_diff
     if self.game.winner == "you" && params[:commit] == "Double Down"
       current_user.chips += 50
@@ -54,7 +71,6 @@ class Calculator
       current_user.chips -= 25
       current_user.save
     end
-
   end
 
   def cards_in_deck
@@ -164,6 +180,7 @@ class Calculator
       self.player_rules
       self.dealer_rules
       self.chip_diff
+      self.add_to_discard
     end
   end
 
