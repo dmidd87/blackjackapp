@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Calculator do
 
   describe "#setup game" do
-    it 'sets up a new game if the params[:commit] is "Deal Cards"' do
+    it 'sets up a new game if "Deal Cards" is clicked' do
       game = Game.create!
       current_user = User.create!(
       first_name: "Test",
@@ -11,11 +11,36 @@ describe Calculator do
       email_address: "test@test.com",
       password: "password",
       chips: 1000)
+
       params = {commit: "Deal Cards", id: game.id}
       calc = Calculator.new(params, current_user)
 
       calc.run
 
+      expect(calc.cards_in_deck.length).to eq(100)
+
+    end
+
+    it 'checks if a dealer is dealt natural blackjack and ends the hand if the dealer is dealt natural blackjack and the player doesnt have blackjack' do
+      game = Game.create!
+      current_user = User.create!(
+      first_name: "Test",
+      last_name: "User",
+      email_address: "test@test.com",
+      password: "password",
+      chips: 1000)
+
+      Card.create!(game: game, points:11, suit:'diamond', name:'ace', player:'you')
+      Card.create!(game: game, points:9, suit:'club', name:'nine', player:'you')
+      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
+      Card.create!(game: game, points:11, suit:'club', name:'eleven', player:'dealer')
+
+      params = {id: game.id}
+      calc = Calculator.new(params, current_user)
+
+      calc.run
+
+      expect(calc.game.winner).to eq("dealer")
     end
   end
 

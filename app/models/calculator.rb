@@ -29,6 +29,7 @@ class Calculator
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
     self.player_cards = cards.select{|card| card.player == 'you' }
     self.player_cards_value = Card.get_value_of_cards(player_cards)
+    self.facedown_blackjack
     self.hit
     self.stand
     self.doubledown
@@ -39,6 +40,20 @@ class Calculator
       player_cards_value: player_cards_value,
       cards: cards,
     }
+  end
+
+  def facedown_blackjack
+    self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+    self.dealer_cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
+    self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
+    self.player_cards = cards.select{|card| card.player == 'you' }
+    self.player_cards_value = Card.get_value_of_cards(player_cards)
+    if self.dealer_cards_value == 21
+      self.game.winner = 'dealer'
+      self.game.save
+    else
+      self.dealer_cards.select { |card| card.face_up == true }[0].try(:update, face_up: false)
+    end
   end
 
   def ace_catch
