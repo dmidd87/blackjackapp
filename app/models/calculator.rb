@@ -78,23 +78,30 @@ class Calculator
   end
 
   def chip_diff_double_down
-    if self.game.winner == "you" && params[:commit] == "Double Down"
+    if self.game.winner == "you"
       current_user.chips += 60
       current_user.save
     end
-    if self.game.winner == "dealer" && params[:commit] == "Double Down"
+    if self.game.winner == "dealer"
       current_user.chips -= 60
       current_user.save
     end
   end
 
   def chip_diff_stand
-    if self.game.winner == "you" && params[:commit] == "Stand"
+    if self.game.winner == "you" && self.player_cards_value < 21 || self.player_cards.length > 2
       current_user.chips += 30
       current_user.save
     end
-    if self.game.winner == "dealer" && params[:commit] = "Stand"
+    if self.game.winner == "dealer"
       current_user.chips -= 30
+      current_user.save
+    end
+  end
+
+  def chip_diff_blackjack
+    if self.game.winner == "you" && self.player_cards.length == 2 && self.player_cards_value == 21
+      current_user.chips += 45
       current_user.save
     end
   end
@@ -200,6 +207,7 @@ class Calculator
       self.ace_catch
       self.player_rules
       self.dealer_rules
+      self.chip_diff_blackjack
       self.chip_diff_stand
       self.add_to_discard
     end
