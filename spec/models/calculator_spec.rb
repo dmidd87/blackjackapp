@@ -18,7 +18,6 @@ describe Calculator do
       calc.run
 
       expect(calc.cards_in_deck.length).to eq(100)
-
     end
 
     it 'checks if a dealer is dealt natural blackjack and ends the hand if the dealer is dealt natural blackjack and the player doesnt have blackjack' do
@@ -375,7 +374,7 @@ describe Calculator do
       expect(calc.player_cards.length).to eq(3)
     end
 
-    it 'validates that if the user goes over 21 then the game is over and the winner is the dealer' do
+    it 'validates that if the user hits and goes over 21 then the game is over and the winner is the dealer' do
       game = Game.create!
 
       current_user = User.create!(
@@ -458,9 +457,7 @@ describe Calculator do
       Card.create!(game: game, points:10, suit:'heart', name:'four', player:'dealer')
       Card.create!(game: game, points:9, suit:'club', name:'seven', player:'dealer')
 
-      Card.create!(game: game, points:8, suit:'club', name:'eight')
-      Card.create!(game: game, points:9, suit:'club', name:'nine')
-      Card.create!(game: game, points:10, suit:'diamond', name:'ten')
+      Card.create!(game: game, points:11, suit:'club', name:'ace')
 
       params = {commit: "Hit", id: game.id}
       calc = Calculator.new(params, current_user)
@@ -468,6 +465,7 @@ describe Calculator do
       calc.run
 
       expect(calc.player_cards.length).to eq(3)
+      expect(calc.player_cards_value).to eq(16)
       expect(calc.game.winner).to eq(nil)
     end
   end
