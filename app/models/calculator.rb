@@ -29,7 +29,7 @@ class Calculator
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
     self.player_cards = cards.select{|card| card.player == 'you' }
     self.player_cards_value = Card.get_value_of_cards(player_cards)
-    self.facedown_blackjack
+    self.blackjack_check
     self.hit
     self.stand
     self.doubledown
@@ -42,17 +42,25 @@ class Calculator
     }
   end
 
-  def facedown_blackjack
+  def blackjack_check
     self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
     self.dealer_cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
     self.player_cards = cards.select{|card| card.player == 'you' }
     self.player_cards_value = Card.get_value_of_cards(player_cards)
-    if self.dealer_cards_value == 21
+    if self.dealer_cards_value == 21 && self.player_cards_value < 21
       self.game.winner = 'dealer'
       self.game.save
     else
       self.dealer_cards.select { |card| card.face_up == true }[0].try(:update, face_up: false)
+    end
+    if self.player_cards_value == 21 && self.player_cards.length == 2 && self.player_cards_value > self.dealer_cards_value && self.dealer_cards.length == 2
+      self.game.winner = 'you'
+      self.game.save
+    end
+    if self.player_cards_value == 21 && self.player_cards.length == 2 && self.dealer_cards_value == 21 && self.dealer_cards.length == 2
+      self.game.winner = 'push'
+      self.game.save
     end
   end
 
@@ -127,24 +135,6 @@ class Calculator
     end
   end
 
-  def has_blackjack
-    if self.player_cards_value == 21 && self.player_cards.length == 2
-      self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      if self.dealer_cards_value == 21 && self.dealer_cards.length == 2
-        self.game.winner = 'push'
-        self.game.save
-      end
-    end
-    if self.player_cards_value == 21 && self.player_cards.length == 2 && self.player_cards_value > self.dealer_cards_value && self.dealer_cards.length == 2
-      self.game.winner = 'you'
-      self.game.save
-    end
-    if self.dealer_cards_value == 21 && self.dealer_cards.length == 2 && self.player_cards_value < 21
-      self.game.winner = 'dealer'
-      self.game.save
-    end
-  end
-
   def win(name)
     self.game.winner = name
     # Counter.count(self.cards)
@@ -195,7 +185,7 @@ class Calculator
 
   def hit
     if params[:commit] == "Hit"
-      self.has_blackjack
+      self.blackjack_check
       if self.player_cards_value < 21
         Card.give_player_a_card(self.cards_in_deck)
       end
@@ -213,7 +203,7 @@ class Calculator
 
   def stand
     if params[:commit] == "Stand"
-      self.has_blackjack
+      self.blackjack_check
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       self.player_cards = self.cards.select{|card| card.player == 'you'}
       self.player_cards_value = Card.get_value_of_cards(player_cards)
@@ -230,7 +220,7 @@ class Calculator
 
   def doubledown
     if params[:commit] == "Double Down"
-      self.has_blackjack
+      self.blackjack_check
       Card.give_player_a_card(self.cards_in_deck)
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
       self.player_cards = self.cards.select{|card| card.player == 'you'}

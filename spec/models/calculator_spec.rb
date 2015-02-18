@@ -42,6 +42,28 @@ describe Calculator do
 
       expect(calc.game.winner).to eq("dealer")
     end
+
+    it 'checks if a dealer is dealt natural blackjack and ends the hand with a push if the dealer is dealt natural blackjack and the player has natural blackjack' do
+      game = Game.create!
+      current_user = User.create!(
+      first_name: "Test",
+      last_name: "User",
+      email_address: "test@test.com",
+      password: "password",
+      chips: 1000)
+
+      Card.create!(game: game, points:11, suit:'diamond', name:'ace', player:'you')
+      Card.create!(game: game, points:10, suit:'heart', name:'ten', player:'you')
+      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
+      Card.create!(game: game, points:11, suit:'club', name:'ace', player:'dealer')
+
+      params = {id: game.id}
+      calc = Calculator.new(params, current_user)
+
+      calc.run
+
+      expect(calc.game.winner).to eq("push")
+    end
   end
 
   describe "#chips" do
