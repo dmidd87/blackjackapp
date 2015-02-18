@@ -79,22 +79,22 @@ class Calculator
 
   def chip_diff_double_down
     if self.game.winner == "you" && params[:commit] == "Double Down"
-      current_user.chips += 50
+      current_user.chips += 60
       current_user.save
     end
     if self.game.winner == "dealer" && params[:commit] == "Double Down"
-      current_user.chips -= 50
+      current_user.chips -= 60
       current_user.save
     end
   end
 
   def chip_diff_stand
     if self.game.winner == "you" && params[:commit] == "Stand"
-      current_user.chips += 25
+      current_user.chips += 30
       current_user.save
     end
     if self.game.winner == "dealer" && params[:commit] = "Stand"
-      current_user.chips -= 25
+      current_user.chips -= 30
       current_user.save
     end
   end

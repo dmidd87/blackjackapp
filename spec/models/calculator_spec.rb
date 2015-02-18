@@ -43,7 +43,7 @@ describe Calculator do
 
       calc.run
 
-      expect(current_user.chips).to eq(1025)
+      expect(current_user.chips).to eq(1030)
     end
 
     it 'verifies that when a player loses they lose chips' do
@@ -69,7 +69,7 @@ describe Calculator do
 
       calc.run
 
-      expect(current_user.chips).to eq(975)
+      expect(current_user.chips).to eq(970)
     end
 
     it 'verifies that when a player wins on a double down they win double the initial bet' do
@@ -95,7 +95,7 @@ describe Calculator do
 
       calc.run
 
-      expect(current_user.chips).to eq(1050)
+      expect(current_user.chips).to eq(1060)
     end
 
     it 'verifies that when a player loses on a double down they lose double the initial bet' do
@@ -121,7 +121,7 @@ describe Calculator do
 
       calc.run
 
-      expect(current_user.chips).to eq(950)
+      expect(current_user.chips).to eq(940)
     end
   end
 
