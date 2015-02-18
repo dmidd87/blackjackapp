@@ -106,25 +106,18 @@ class Calculator
   end
 
   def has_blackjack
-    if self.player_cards_value == 21
+    if self.player_cards_value == 21 && self.player_cards.length == 2
       self.cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      if self.dealer_cards_value == 21
+      if self.dealer_cards_value == 21 && self.dealer_cards.length == 2
         self.game.winner = 'push'
         self.game.save
       end
-    8.times do
-        if self.dealer_cards_value < 21
-          Card.run_dealers_hand(self.game, self.cards_in_deck, self.dealer_cards_value, self.player_cards_value)
-          self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
-          self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
-        end
-      end
     end
-    if self.player_cards_value == 21 && dealer_cards_value < 21 && player_cards_value > dealer_cards_value
+    if self.player_cards_value == 21 && self.player_cards.length == 2 && self.player_cards_value > self.dealer_cards_value && self.dealer_cards.length == 2
       self.game.winner = 'you'
       self.game.save
     end
-    if self.dealer_cards_value == 21 && self.player_cards_value < 21
+    if self.dealer_cards_value == 21 && self.dealer_cards.length == 2 && self.player_cards_value < 21
       self.game.winner = 'dealer'
       self.game.save
     end
