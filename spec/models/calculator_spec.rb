@@ -101,11 +101,11 @@ describe Calculator do
       Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
       Card.create!(game: game, points:5, suit:'club', name:'five', player:'dealer')
 
-      Card.create!(game: game, points:3, suit:'diamond', name:'three')
-      Card.create!(game: game, points:7, suit:'diamond', name:'seven')
+      Card.create!(game: game, points:9, suit:'diamond', name:'three')
+      Card.create!(game: game, points:9, suit:'heart', name:'seven')
       Card.create!(game: game, points:8, suit:'diamond', name:'eight')
-      Card.create!(game: game, points:5, suit:'diamond', name:'five')
-      Card.create!(game: game, points:4, suit:'diamond', name:'four')
+      Card.create!(game: game, points:7, suit:'diamond', name:'five')
+      Card.create!(game: game, points:7, suit:'heart', name:'four')
 
       params = {commit: "Stand", id: game.id}
 
@@ -113,7 +113,13 @@ describe Calculator do
 
       calc.run
 
-      {commit: "New Hand"}
+      expect(calc.game.winner).to eq('you')
+
+      params = {commit: "New Hand"}
+
+      calc = Calculator.new(params, current_user)
+
+      calc.run
 
       expect(calc.dealer_cards.count).to eq(2)
     end

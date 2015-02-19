@@ -36,7 +36,7 @@
 
 .card-face-down {
   background-image: none;
-  background-color: #ccc;
+  border: 1px solid rgba(0,0,0,0.3);
 }
 
 .ace-spade { background-position: 0 $card-height * -.01; }
