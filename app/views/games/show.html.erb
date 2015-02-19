@@ -1,5 +1,5 @@
 <% if @cards == [] %>
-  <h1 class="text-center">Play some blackjack</h1>
+  <h1 class="text-center">Play some blackjack!</h1>
   <%= form_for @game do |f| %>
     <div class="text-center">
       <%= submit_tag "Deal Cards", :class => 'btn btn-primary'%>
@@ -24,11 +24,35 @@ Hand Value : <%= @dealer_cards_value %>
 <br>
 <br>
 
-<% if @game.winner %>
+<% if @game.winner == 'you' %>
   <div class="text-center">
-    <h3>Game over</h3>
+    <h3>Game over! You Win!</h3>
     <br>
     <%= form_for @game do |f| %>
+      <div class="text-center">
+        <%= submit_tag "New Hand", :class => 'btn btn-primary'%>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @game.winner == 'dealer' %>
+  <div class="text-center">
+    <h3>Game over! You Lose!</h3>
+    <br>
+    <%= form_for Game.new do |f| %>
+      <div class="text-center">
+        <%= submit_tag "New Hand", :class => 'btn btn-primary'%>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @game.winner == 'push' %>
+  <div class="text-center">
+    <h3>Game over! It's A Push!</h3>
+    <br>
+    <%= form_for Game.new do |f| %>
       <div class="text-center">
         <%= submit_tag "New Hand", :class => 'btn btn-primary'%>
       </div>
@@ -53,7 +77,6 @@ Hand Value : <%= @dealer_cards_value %>
     <%= form_for @game do |f| %>
       <%= submit_tag "Hit", :class => 'btn btn-primary' %>
       <%= submit_tag "Stand", :class => 'btn btn-primary' %>
-      <%= submit_tag "Split", :class => 'btn btn-primary' %>
       <%= submit_tag "Double Down", :class => 'btn btn-primary' %>
     <% end %>
   </div>

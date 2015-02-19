@@ -17,7 +17,7 @@ describe Calculator do
 
       calc.run
 
-      expect(calc.cards_in_deck.length).to eq(100)
+      expect(calc.cards_in_deck.length).to eq(308)
     end
 
     it 'checks if a dealer is dealt natural blackjack and ends the hand if the dealer is dealt natural blackjack and the player doesnt have blackjack' do
@@ -84,6 +84,42 @@ describe Calculator do
       calc.run
 
       expect(calc.game.winner).to eq("you")
+    end
+
+    it 'deletes all the cards with the discard boolean of true, dealer should have two cards by the end after hitting during the first' do
+      game = Game.create!
+      current_user = User.create!(
+      first_name: "Test",
+      last_name: "User",
+      email_address: "test@test.com",
+      password: "password",
+      chips: 1000)
+
+      Card.create!(game: game, points:11, suit:'club', name:'ace', player:'you')
+      Card.create!(game: game, points:9, suit:'club', name:'nine', player:'you')
+
+      Card.create!(game: game, points:10, suit:'club', name:'ten', player:'dealer')
+      Card.create!(game: game, points:5, suit:'club', name:'five', player:'dealer')
+
+      Card.create!(game: game, points:3, suit:'diamond', name:'three')
+      Card.create!(game: game, points:7, suit:'diamond', name:'seven')
+      Card.create!(game: game, points:8, suit:'diamond', name:'eight')
+      Card.create!(game: game, points:5, suit:'diamond', name:'five')
+      Card.create!(game: game, points:4, suit:'diamond', name:'four')
+
+      params = {commit: "Stand", id: game.id}
+
+      calc = Calculator.new(params, current_user)
+
+      calc.run
+
+      {commit: "New Hand"}
+
+      expect(calc.dealer_cards.count).to eq(2)
+    end
+
+    it 'repopulates the hands of the players and a new hand can be played' do
+
     end
   end
 

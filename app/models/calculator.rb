@@ -86,20 +86,6 @@ class Calculator
     end
   end
 
-  def add_to_discard
-    if self.game.winner?
-      discardplayercards = self.player_cards.select { |card| card.discard == false }
-        discardplayercards.each do |t|
-          t.try(:update, discard: true)
-        end
-
-      discarddealercards = self.dealer_cards.select { |card| card.discard == false }
-        discarddealercards.each do |t|
-          t.try(:update, discard: true)
-        end
-    end
-  end
-
   def chip_diff_double_down
     if self.game.winner == "you"
       current_user.chips += 60
@@ -131,24 +117,23 @@ class Calculator
 
   def cards_in_deck
     self.cards.select do |card|
-      card.player.nil?
+      card.player.nil? && !card.discard
     end
   end
 
   def win(name)
-    self.game.winner = name
-    # Counter.count(self.cards)
+    self.game.update!(:winner => name)
   end
 
   def player_rules
     if self.player_cards_value > 21
       self.dealer_cards.select { |card| card.face_up == false }[0].try(:update, face_up: true)
-      self.game.winner = 'dealer'
-      self.game.save
+      win('dealer')
     end
   end
 
   def dealer_rules
+    self.ace_catch
     10.times do
       if self.dealer_cards_value < 17
         Card.run_dealers_hand(self.game, self.cards_in_deck, self.dealer_cards_value, self.player_cards_value)
@@ -159,26 +144,21 @@ class Calculator
     10.times do
       #all the conditions where the winner is you
       if dealer_cards_value > 21 && player_cards_value <= 21
-        self.game.winner = 'you'
-        self.game.save
+        win 'you'
       end
       if self.dealer_cards_value >= 17 && self.player_cards_value > self.dealer_cards_value && self.player_cards_value <= 21
-        self.game.winner = 'you'
-        self.game.save
+        win'you'
       end
       #all the conditions where the winner is push
       if self.dealer_cards_value >= 17 && self.player_cards_value == self.dealer_cards_value && self.player_cards_value < 21 && self.dealer_cards_value < 21
-        self.game.winner = 'push'
-        self.game.save
+        win 'push'
       end
       #all the conditions where the winner is dealer
       if self.dealer_cards_value >= 17 && self.dealer_cards_value < 21 && self.dealer_cards_value > self.player_cards_value
-        self.game.winner = 'dealer'
-        self.game.save
+        win 'dealer'
       end
       if self.dealer_cards_value >= 17 && self.player_cards_value < self.dealer_cards_value && self.dealer_cards_value <=21
-        self.game.winner = 'dealer'
-        self.game.save
+        win 'dealer'
       end
     end
   end
@@ -197,7 +177,6 @@ class Calculator
       self.ace_catch
       self.player_rules
       self.chip_diff_stand
-      self.add_to_discard
     end
   end
 
@@ -214,7 +193,6 @@ class Calculator
       self.dealer_rules
       self.chip_diff_blackjack
       self.chip_diff_stand
-      self.add_to_discard
     end
   end
 
@@ -231,7 +209,6 @@ class Calculator
       self.player_rules
       self.dealer_rules
       self.chip_diff_double_down
-      self.add_to_discard
     end
   end
 
@@ -240,12 +217,25 @@ class Calculator
     self.game = Game.find(params[:id])
     self.cards = game.cards
     Card.get_four_random_cards(cards_in_deck, current_user.id)
+    self.player_cards = self.cards.select{|card| card.player == 'you'}
+    self.player_cards_value = Card.get_value_of_cards(player_cards)
+    self.dealer_cards = self.cards.select{|card| card.player == 'dealer'}
+    self.dealer_cards_value = Card.get_value_of_cards(self.dealer_cards)
+    self.ace_catch
   end
 
   def new_hand
-    if params[:commit] == "New Hand"
-      self.dealer_cards = game.cards
-      Card.get_four_random_cards(cards_in_deck, current_user.id)
+    self.game.winner = nil
+    self.game.save
+    self.cards = game.cards
+    cards.each do |card|
+      card.update!(discard: true) if card.player?
     end
+    # winner is nil
+    # calculate the percentage of discarded cards vs non
+    # if that percentage is greater than 40%, reset the deck
+    #   discard = false for all
+    #   player = false for all
+    Card.get_four_random_cards(cards_in_deck, current_user.id)
   end
 end

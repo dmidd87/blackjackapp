@@ -7,7 +7,7 @@ class GamesController < ApplicationController
     @user = current_user
     @hand = Hand.new(user_id: @user.id)
     @game = Game.find(params[:id])
-    @cards = Card.where(game_id: @game.id)
+    @cards = Card.where(game_id: @game.id, discard: false)
     @player_cards = @cards.select{|card| card.player == 'you' }
     @dealer_cards = @cards.select{|card| card.player == 'dealer' }
     @player_cards_value = Card.get_value_of_cards(@player_cards)
