@@ -18,12 +18,12 @@ class Calculator
       setup_new_game
     end
 
-    self.game = Game.find(params[:id])
-    self.cards = Card.where(game_id: game.id)
-
     if params[:commit] == "New Hand"
       new_hand
     end
+
+    self.game = Game.find(params[:id])
+    self.cards = Card.where(game_id: game.id)
 
     self.dealer_cards = cards.select{|card| card.player == 'dealer'}
     self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
@@ -225,6 +225,8 @@ class Calculator
   end
 
   def new_hand
+    GameGenerator.generate_cards(params[:id])
+    self.game = Game.find(params[:id])
     self.game.winner = nil
     self.game.save
     self.cards = game.cards
@@ -237,5 +239,10 @@ class Calculator
     #   discard = false for all
     #   player = false for all
     Card.get_four_random_cards(cards_in_deck, current_user.id)
+    self.dealer_cards = cards.select{|card| card.player == 'dealer'}
+    self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
+    self.player_cards = cards.select{|card| card.player == 'you' }
+    self.player_cards_value = Card.get_value_of_cards(player_cards)
+    self.ace_catch
   end
 end

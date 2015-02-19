@@ -1,6 +1,6 @@
 class GameGenerator
     def self.generate_cards(game_id)
-      6.times do
+      2.times do
       Card.create!([
         {
           :game_id => game_id,
