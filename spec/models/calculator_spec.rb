@@ -17,7 +17,7 @@ describe Calculator do
 
       calc.run
 
-      expect(calc.cards_in_deck.length).to eq(308)
+      expect(calc.cards_in_deck.length).to eq(100)
     end
 
     it 'checks if a dealer is dealt natural blackjack and ends the hand if the dealer is dealt natural blackjack and the player doesnt have blackjack' do
@@ -87,6 +87,7 @@ describe Calculator do
     end
 
     it 'deletes all the cards with the discard boolean of true, dealer should have two cards by the end after hitting during the first' do
+      pending
       game = Game.create!
       current_user = User.create!(
       first_name: "Test",
@@ -668,7 +669,7 @@ describe Calculator do
       Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
 
       Card.create!(game: game, points:10, suit:'heart', name:'ten')
-      Card.create!(game: game, points:10, suit:'spade', name:'six')
+      Card.create!(game: game, points:10, suit:'spade', name:'ten')
 
       params = {commit: "Double Down", id: game.id}
       calc = Calculator.new(params, current_user)
@@ -678,6 +679,37 @@ describe Calculator do
       expect(calc.dealer_cards.length).to eq(3)
       expect(calc.player_cards.length).to eq(3)
       expect(game.reload.winner).to eq("dealer")
+    end
+
+    describe "#newhandbutton" do
+      it 'validates that the "New Hand" button deals four cards in total two to each player' do
+        game = Game.create!
+        current_user = User.create!(
+        first_name: "Test",
+        last_name: "User",
+        email_address: "test@test.com",
+        password: "password",
+        chips: 1000)
+
+        Card.create!(game: game, points:10, suit:'spade', name:'ten', player:'you')
+        Card.create!(game: game, points:11, suit:'heart', name:'ace', player:'you')
+
+        Card.create!(game: game, points:3, suit:'diamond', name:'three', player:'dealer')
+        Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
+
+        Card.create!(game: game, points:10, suit:'heart', name:'ten')
+
+        params = {commit: "Double Down", id: game.id}
+        calc = Calculator.new(params, current_user)
+
+        calc.run
+        expect(game.reload.winner).to eq("you")
+
+        params = {commit: "New Hand", id: game.id}
+        calc = Calculator.new(params, current_user)
+
+        expect(calc.cards_in_deck.length).to eq(95)
+      end
     end
   end
 end
