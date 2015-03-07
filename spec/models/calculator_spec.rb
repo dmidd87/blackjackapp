@@ -682,7 +682,7 @@ describe Calculator do
     end
 
     describe "#newhandbutton" do
-      it 'validates that the "New Hand" button deals four cards in total two to each player' do
+      it 'validates that the "New Hand" button deals two cards to each player after a completed hand' do
         game = Game.create!
         current_user = User.create!(
         first_name: "Test",
@@ -697,16 +697,27 @@ describe Calculator do
         Card.create!(game: game, points:3, suit:'diamond', name:'three', player:'dealer')
         Card.create!(game: game, points:6, suit:'club', name:'six', player:'dealer')
 
-        Card.create!(game: game, points:10, suit:'heart', name:'ten')
-
-        params = {commit: "Double Down", id: game.id}
+        params = {commit: "Deal Cards", id: game.id}
         calc = Calculator.new(params, current_user)
 
         calc.run
-        expect(game.reload.winner).to eq("you")
+
+        Card.create!(game: game, points:10, suit:'heart', name:'ten')
+
+        params = {commit: "Stand", id: game.id}
+        calc = Calculator.new(params, current_user)
+
+        calc.run
 
         params = {commit: "New Hand", id: game.id}
         calc = Calculator.new(params, current_user)
+
+        Card.create!(game: game, points:2, suit:'heart', name:'two')
+        Card.create!(game: game, points:3, suit:'spade', name:'three')
+        Card.create!(game: game, points:4, suit:'spade', name:'four')
+        Card.create!(game: game, points:5, suit:'spade', name:'five')
+
+        calc.run
 
         expect(calc.cards_in_deck.length).to eq(95)
       end

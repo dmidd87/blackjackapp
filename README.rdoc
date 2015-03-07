@@ -1,15 +1,1 @@
-TODO
-
-Add a winner attribute to games table (added winner to games table as a string)
-Add logic to games#update to progress the hand
-  computer does stuff on behalf of the dealer
-  put logic methods in the game model
-    "dealing" is assigning a player to a card that doesn't have one
-    busting / standing involves changing the face_up value of the face_down card
-  eventually update the winner attribute of the games table
-
-
-#model test
-#ace logic #if hand is greater than 21 and has an ace make the value one
-#natural blackjack logic(facedown card check)
-#def split 1/29/2015
+Welcome to my blackjack app!
