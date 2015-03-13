@@ -226,27 +226,17 @@ class Calculator
   end
 
   def new_hand
-    if params[:commit] == "New Hand"
-      self.game = Game.find(params[:id])
-      self.cards = game.cards
-      self.cards.each do |card|
-        card.update!(discard: true) if card.player?
-      end
-      self.game.winner = nil
-      self.game.save
-      # winner is nil
-      # calculate the percentage of discarded cards vs non
-      # if that percentage is greater than 40%, reset the deck
-      #   discard = false for all
-      #   player = false for all
-      self.game = Game.find(params[:id])
-      self.cards = game.cards
-      Card.get_four_random_cards(cards_in_deck, current_user.id)
-      self.dealer_cards = cards.select{|card| card.player == 'dealer'}
-      self.dealer_cards_value = Card.get_value_of_cards(dealer_cards)
-      self.player_cards = cards.select{|card| card.player == 'you' }
-      self.player_cards_value = Card.get_value_of_cards(player_cards)
-      self.ace_catch
+    self.game = Game.find(params[:id])
+    self.cards = game.cards
+    self.cards.each do |card|
+      card.update!(discard: true) if card.player?
     end
+    self.game.winner = nil
+    self.game.save
+    # winner is nil
+    # calculate the percentage of discarded cards vs non
+    # if that percentage is greater than 40%, reset the deck
+    #   discard = false for all
+    #   player = false for all
   end
 end
